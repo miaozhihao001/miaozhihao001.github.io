@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>MessageConverter详解 | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="MessageConverter详解org.springframework.amqp.support.converter.MessageConverter">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MessageConverter详解">
+<meta property="og:url" content="http://baixin.io/2017/12/19/MessageConverter详解/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="MessageConverter详解org.springframework.amqp.support.converter.MessageConverter">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-90014c4ee566619c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2017-12-19T12:19:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MessageConverter详解">
+<meta name="twitter:description" content="MessageConverter详解org.springframework.amqp.support.converter.MessageConverter">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-90014c4ee566619c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-MessageConverter详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/MessageConverter详解/" class="article-date">
+  	<time datetime="2017-12-19T12:19:12.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MessageConverter详解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="MessageConverter详解"><a href="#MessageConverter详解" class="headerlink" title="MessageConverter详解"></a>MessageConverter详解</h2><p>org.springframework.amqp.support.converter.MessageConverter</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-90014c4ee566619c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="MessageConverter"></p>
+<a id="more"></a>
+<p>Message toMessage(Object object, MessageProperties messageProperties);<br>将java对象和属性对象转换成Message对象。</p>
+<p>Object fromMessage(Message message) throws MessageConversionException;<br>将消息对象转换成java对象。</p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p><strong>定义Config类</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">        container.setConnectionFactory(connectionFactory);</span><br><span class="line">        container.setQueueNames(&quot;zhihao.miao.order&quot;);</span><br><span class="line"></span><br><span class="line">        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageHandler());</span><br><span class="line">        //指定消息转换器</span><br><span class="line">        adapter.setMessageConverter(new TestMessageConverter());</span><br><span class="line">        //设置处理器的消费消息的默认方法</span><br><span class="line">        adapter.setDefaultListenerMethod(&quot;onMessage&quot;);</span><br><span class="line">        container.setMessageListener(adapter);</span><br><span class="line"></span><br><span class="line">        return container;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>MessageListenerAdapter中定义的消息转换器，消费端接收的消息就从Message类型转换成了String类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.Message;</span><br><span class="line">import org.springframework.amqp.core.MessageProperties;</span><br><span class="line">import org.springframework.amqp.support.converter.MessageConversionException;</span><br><span class="line">import org.springframework.amqp.support.converter.MessageConverter;</span><br><span class="line"></span><br><span class="line">public class TestMessageConverter implements MessageConverter &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Message toMessage(Object object, MessageProperties messageProperties) throws MessageConversionException &#123;</span><br><span class="line">        System.out.println(&quot;=======toMessage=========&quot;);</span><br><span class="line">        return new Message(object.toString().getBytes(),messageProperties);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //消息类型转换器中fromMessage方法返回的类型就是消费端处理器接收的类型</span><br><span class="line">    @Override</span><br><span class="line">    public Object fromMessage(Message message) throws MessageConversionException &#123;</span><br><span class="line">        System.out.println(&quot;=======fromMessage=========&quot;);</span><br><span class="line">        return new String(message.getBody());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>消费者处理消息的Handler</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public class MessageHandler &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    public void onMessage(String message)&#123;</span><br><span class="line">        System.out.println(&quot;---------onMessage-------------&quot;);</span><br><span class="line">        System.out.println(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>启动类</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * MessageConverter可以把java对象转换成Message对象，也可以把Message对象转换成java对象</span><br><span class="line"> *</span><br><span class="line"> * MessageListenerAdapter内部通过MessageConverter把Message转换成java对象，然后找到相应的处理方法，参数为转换成的java对象</span><br><span class="line"> */</span><br><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line">        System.out.println(&quot;===start up======&quot;);</span><br><span class="line">        TimeUnit.SECONDS.sleep(30);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动应用类，发送消息到<code>zhihao.miao.order</code>队列,控制台打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">===start up======</span><br><span class="line">=======fromMessage=========</span><br><span class="line">---------onMessage-------------</span><br><span class="line">String类型的消息</span><br></pre></td></tr></table></figure></p>
+<p>从控制台打印我们知道了在消费者处理消息之前会进行消息类型转换，调用<code>TestMessageConverter</code>的<code>fromMessage</code>方法，然后执行消息处理器的<code>onMessage</code>方法，方法参数就是<code>String</code>类型。</p>
+<h3 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h3><p>自定义一个MyBody类型，将消息从Message转换成MyBody类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public class MyBody &#123;</span><br><span class="line"></span><br><span class="line">    private byte[] bodys;</span><br><span class="line"></span><br><span class="line">    public MyBody(byte[] bodys)&#123;</span><br><span class="line">        this.bodys = bodys;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public String toString() &#123;</span><br><span class="line">        return new String(bodys);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后修改<code>TestMessageConverter</code>的<code>fromMessage</code>方法，返回了<code>MyBody</code>类型，那么消息处理器的消费方法也是MyBody参数的消费方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.Message;</span><br><span class="line">import org.springframework.amqp.core.MessageProperties;</span><br><span class="line">import org.springframework.amqp.support.converter.MessageConversionException;</span><br><span class="line">import org.springframework.amqp.support.converter.MessageConverter;</span><br><span class="line"></span><br><span class="line">public class TestMessageConverter implements MessageConverter &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public Message toMessage(Object object, MessageProperties messageProperties) throws MessageConversionException &#123;</span><br><span class="line">        System.out.println(&quot;=======toMessage=========&quot;);</span><br><span class="line">        return new Message(object.toString().getBytes(),messageProperties);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //消息类型转换器中fromMessage方法返回的类型就是消费端处理器接收的类型</span><br><span class="line">    @Override</span><br><span class="line">    public Object fromMessage(Message message) throws MessageConversionException &#123;</span><br><span class="line">        System.out.println(&quot;=======fromMessage=========&quot;);</span><br><span class="line">        return new MyBody(message.getBody());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时的消息处理器，处理器中的方法的入参就是MyBody类型了，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class MessageHandler &#123;</span><br><span class="line"></span><br><span class="line">    public void onMessage(MyBody message)&#123;</span><br><span class="line">        System.out.println(&quot;---------onMessage---MyBody-------------&quot;);</span><br><span class="line">        System.out.println(message);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时控制台打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">===start up======</span><br><span class="line">=======fromMessage=========</span><br><span class="line">---------onMessage---MyBody-------------</span><br><span class="line">Mybody类型的消息</span><br></pre></td></tr></table></figure></p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><p>我们还测试如下如果不使用自定义的<code>Converter</code>，那么当消息的属性中含有属性content_type的值为text，那么默认的转换成的java类型就是String类型，如果不指定那么默认的转换类型就是byte[]</p>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p>我们跟进去<code>MessageListenerAdapte</code>r的<code>setMessageConverter</code>方法，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Set the converter that will convert incoming Rabbit messages to listener method arguments, and objects returned</span><br><span class="line"> * from listener methods back to Rabbit messages.</span><br><span class="line"> * &lt;p&gt;</span><br><span class="line"> * The default converter is a &#123;@link SimpleMessageConverter&#125;, which is able to handle &quot;text&quot; content-types.</span><br><span class="line"> * @param messageConverter The message converter.</span><br><span class="line"> */</span><br><span class="line">public void setMessageConverter(MessageConverter messageConverter) &#123;</span><br><span class="line">	this.messageConverter = messageConverter;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private MessageConverter messageConverter = new SimpleMessageConverter();</span><br></pre></td></tr></table></figure>
+<p>我们发现默认的<code>MessageConverter</code>是<code>SimpleMessageConverter</code>，我们进入<code>SimpleMessageConverter</code>类中看其默认的转换逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public Object fromMessage(Message message) throws MessageConversionException &#123;</span><br><span class="line">	Object content = null;</span><br><span class="line">	MessageProperties properties = message.getMessageProperties();</span><br><span class="line">	if (properties != null) &#123;</span><br><span class="line">		String contentType = properties.getContentType();</span><br><span class="line">		//contentType属性值是以text开头，那么就将Message类型转换成String类型</span><br><span class="line">		if (contentType != null &amp;&amp; contentType.startsWith(&quot;text&quot;)) &#123;</span><br><span class="line">			String encoding = properties.getContentEncoding();</span><br><span class="line">			if (encoding == null) &#123;</span><br><span class="line">				encoding = this.defaultCharset;</span><br><span class="line">			&#125;</span><br><span class="line">			try &#123;</span><br><span class="line">				content = new String(message.getBody(), encoding);</span><br><span class="line">			&#125;</span><br><span class="line">			catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">				throw new MessageConversionException(</span><br><span class="line">						&quot;failed to convert text-based Message content&quot;, e);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		//如果content_type的值是application/x-java-serialized-object则把消息序列化为java对象</span><br><span class="line">		else if (contentType != null &amp;&amp;</span><br><span class="line">				contentType.equals(MessageProperties.CONTENT_TYPE_SERIALIZED_OBJECT)) &#123;</span><br><span class="line">			try &#123;</span><br><span class="line">				content = SerializationUtils.deserialize(</span><br><span class="line">						createObjectInputStream(new ByteArrayInputStream(message.getBody()), this.codebaseUrl));</span><br><span class="line">			&#125;</span><br><span class="line">			catch (IOException e) &#123;</span><br><span class="line">				throw new MessageConversionException(</span><br><span class="line">						&quot;failed to convert serialized Message content&quot;, e);</span><br><span class="line">			&#125;</span><br><span class="line">			catch (IllegalArgumentException e) &#123;</span><br><span class="line">				throw new MessageConversionException(</span><br><span class="line">						&quot;failed to convert serialized Message content&quot;, e);</span><br><span class="line">			&#125;</span><br><span class="line">			catch (IllegalStateException e) &#123;</span><br><span class="line">				throw new MessageConversionException(</span><br><span class="line">						&quot;failed to convert serialized Message content&quot;, e);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	if (content == null) &#123;</span><br><span class="line">	   //都没有符合，则转换成字节数组</span><br><span class="line">		content = message.getBody();</span><br><span class="line">	&#125;</span><br><span class="line">	return content;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>源码分析总结：<br>1.<code>MessageConverter</code>可以把<code>java</code>对象转换成<code>Message</code>对象，也可以把<code>Message</code>对象转换成<code>java</code>对象<br>2.<code>MessageListenerAdapter</code>内部通过<code>MessageConverter</code>把<code>Message</code>转换成java对象，然后找到相应的处理方法，参数为转换成的java对象。<br>3.<code>SimpleMessageConverter</code>处理逻辑：<br>如果<code>content_type</code>是以text开头，则把消息转换成<code>String</code>类型<br>如果<code>content_type的</code>值是<code>application/x-java-serialized-object</code>则把消息序列化为java对象，否则，把消息转换成字节数组。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/Jackson2JsonMessageConverter与ContentTypeDelegatingMessageConverter详解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Jackson2JsonMessageConverter与ContentTypeDelegatingMessageConverter详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/MessageListenerAdapter详解/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MessageListenerAdapter详解</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="MessageConverter详解" data-title="MessageConverter详解" data-url="http://baixin.io/2017/12/19/MessageConverter详解/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

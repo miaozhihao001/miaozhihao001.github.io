@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>消息确认之二（Consumer Acknowledgements） | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="消费确认（comsumer acknowledgements）broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息确认之二（Consumer Acknowledgements）">
+<meta property="og:url" content="http://baixin.io/2017/12/19/消息确认之二（Consumer Acknowledgements）/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="消费确认（comsumer acknowledgements）broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-d56211e12bfb0579.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-dad870d1d8943943.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-b18d80ab516b2012.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-5223999b62731e01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-cc96801dc1c72368.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2017-12-19T12:32:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="消息确认之二（Consumer Acknowledgements）">
+<meta name="twitter:description" content="消费确认（comsumer acknowledgements）broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-d56211e12bfb0579.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-消息确认之二（Consumer Acknowledgements）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/消息确认之二（Consumer Acknowledgements）/" class="article-date">
+  	<time datetime="2017-12-19T12:27:25.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      消息确认之二（Consumer Acknowledgements）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="消费确认（comsumer-acknowledgements）"><a href="#消费确认（comsumer-acknowledgements）" class="headerlink" title="消费确认（comsumer acknowledgements）"></a>消费确认（comsumer acknowledgements）</h2><p>broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。</p>
+<a id="more"></a>
+<h3 id="RabbitMQ-Java-Client-实现消息确认"><a href="#RabbitMQ-Java-Client-实现消息确认" class="headerlink" title="RabbitMQ Java Client 实现消息确认"></a>RabbitMQ Java Client 实现消息确认</h3><h4 id="自动确认"><a href="#自动确认" class="headerlink" title="自动确认"></a>自动确认</h4><p>向<code>zhihao.miao.order</code>队列中发送一条消息<br><img src="http://upload-images.jianshu.io/upload_images/5225109-d56211e12bfb0579.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="web管控台查看"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.Connection;</span><br><span class="line">import com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class Consumer &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = new ConnectionFactory();</span><br><span class="line">        connectionFactory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * basicConsume方法的第二个参数是boolean类型，true表示消息一旦投递出去就自动确认，而false表示需要自己手动去确认</span><br><span class="line">         * 自动确认有丢消息的可能，因为如果消费端消费逻辑抛出异常，也就是消费端没有处理成功这条消息，那么就相当于丢失了消息</span><br><span class="line">         * 设置了false，表示需要人为手动的去确定消息，只有消费者将消息消费成功之后给与broker人为确定才进行消息确认</span><br><span class="line">         * 这边也有个问题就是如果由于程序员自己的代码的原因造成人为的抛出异常，人工确认那么消息就会一直重新入队列，一直重发？</span><br><span class="line">         */</span><br><span class="line"></span><br><span class="line">        String consumerTag = channel.basicConsume(&quot;zhihao.miao.order&quot;,true,new SimpleConsumer(channel));</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(30);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>消费具体逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException &#123;</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line">        System.out.println(&quot;-----收到消息了---------------&quot;);</span><br><span class="line">        System.out.println(&quot;消息属性为：&quot;+properties);</span><br><span class="line">        System.out.println(&quot;消息内容为：&quot;+new String(body));</span><br><span class="line">        try</span><br><span class="line">        &#123;</span><br><span class="line">            int i = 1/0;</span><br><span class="line">            System.out.println(i);</span><br><span class="line">        &#125;catch (Exception e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>控制台打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">amq.ctag-6_GQmh1tMeooWSiuqUmz0Q</span><br><span class="line">java.lang.ArithmeticException: / by zero</span><br><span class="line">-----收到消息了---------------</span><br><span class="line">	at com.zhihao.test.day04.SimpleConsumer.handleDelivery(SimpleConsumer.java:29)</span><br><span class="line">amq.ctag-6_GQmh1tMeooWSiuqUmz0Q</span><br><span class="line">	at com.rabbitmq.client.impl.ConsumerDispatcher$5.run(ConsumerDispatcher.java:149)</span><br><span class="line">	at com.rabbitmq.client.impl.ConsumerWorkService$WorkPoolRunnable.run(ConsumerWorkService.java:100)</span><br><span class="line">消息属性为：#contentHeader&lt;basic&gt;(content-type=json, content-encoding=null, headers=&#123;&#125;, delivery-mode=2, priority=0, correlation-id=null, reply-to=null, expiration=null, message-id=null, timestamp=null, type=null, user-id=null, app-id=null, cluster-id=null)</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)</span><br><span class="line">消息内容为：&#123;&quot;orderId&quot;:&quot;abba05db-050e-4b1a-97f1-c469b23ca27b&quot;,&quot;createTime&quot;:&quot;2017-10-22T21:02:41.861&quot;,&quot;price&quot;:100.0&#125;</span><br><span class="line">	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:745)</span><br></pre></td></tr></table></figure></p>
+<p>此时可以看到消费端抛出了异常，但是我们发现这条消息也已经消费掉了，此时如果消费端消费逻辑使用spring进行管理的话消费端业务逻辑会进行回滚，这也就造成了实际意义的消息丢失。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-dad870d1d8943943.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="web管控台"></p>
+<h4 id="手动确认"><a href="#手动确认" class="headerlink" title="手动确认"></a>手动确认</h4><p>自动确认会造成实际意义上的消息丢失。</p>
+<p>将basicConsume方法的第二个参数改为false，表示人工的进行消息确认，如果消费者正在监听队列，那么此时消息进入Unacked，而如果消费者停掉服务，那么消息的状态又变成Ready了。这个机制表明了消息必须是ack确认之后才会在server中删除掉。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.Connection;</span><br><span class="line">import com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class Consumer &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = new ConnectionFactory();</span><br><span class="line">        connectionFactory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        //手动确认</span><br><span class="line">        String consumerTag = channel.basicConsume(&quot;zhihao.miao.order&quot;,false,new SimpleConsumer(channel));</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(30);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>消费具体逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException&#123;</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line">        System.out.println(&quot;-----收到消息了--------------&quot;);</span><br><span class="line"></span><br><span class="line">        System.out.println(&quot;消息属性为：&quot;+properties);</span><br><span class="line">        System.out.println(&quot;消息内容为：&quot;+new String(body));</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(10);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        this.getChannel().basicAck(envelope.getDeliveryTag(),false);</span><br><span class="line">        System.out.println(&quot;消息消费成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-b18d80ab516b2012.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="此时消息已经发送给消费者，但是消费者还没有进行手动确认"></p>
+<p>发送一个header中包含error属性的消息，</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-5223999b62731e01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="发送一个header中包含error属性的消息"></p>
+<p>改造消费逻辑<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException&#123;</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line">        System.out.println(&quot;-----收到消息了--------------&quot;);</span><br><span class="line"></span><br><span class="line">        if(properties.getHeaders().get(&quot;error&quot;) != null)&#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(15);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">          </span><br><span class="line">            System.out.println(&quot;nack&quot;);</span><br><span class="line">            this.getChannel().basicNack(envelope.getDeliveryTag(),false,true);</span><br><span class="line"></span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;消息属性为：&quot;+properties);</span><br><span class="line">        System.out.println(&quot;消息内容为：&quot;+new String(body));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(10);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        this.getChannel().basicAck(envelope.getDeliveryTag(),false);</span><br><span class="line">        System.out.println(&quot;消息消费成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>控制台打印，说明该消息一直重新入队列然后一直重新消费<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">amq.ctag-U5cHBcnxa5dhkYXjd1LFgQ</span><br><span class="line">amq.ctag-U5cHBcnxa5dhkYXjd1LFgQ</span><br><span class="line">-----收到消息了--------------</span><br><span class="line">nack</span><br><span class="line">amq.ctag-U5cHBcnxa5dhkYXjd1LFgQ</span><br><span class="line">-----收到消息了--------------</span><br><span class="line">nack</span><br><span class="line">amq.ctag-U5cHBcnxa5dhkYXjd1LFgQ</span><br><span class="line">-----收到消息了--------------</span><br><span class="line">nack</span><br><span class="line">amq.ctag-U5cHBcnxa5dhkYXjd1LFgQ</span><br><span class="line">-----收到消息了--------------</span><br><span class="line">nack</span><br></pre></td></tr></table></figure></p>
+<p>消费端也可以拒绝消息，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException&#123;</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line">        System.out.println(&quot;-----收到消息了--------------&quot;);</span><br><span class="line"></span><br><span class="line">        if(properties.getHeaders().get(&quot;error&quot;) != null)&#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(15);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">           </span><br><span class="line">            //这个api也支持拒绝消息消费，第二个参数表示是否重新入队列</span><br><span class="line">            this.getChannel().basicReject(envelope.getDeliveryTag(),false);</span><br><span class="line">            System.out.println(&quot;消息无法消费，拒绝消息&quot;);</span><br><span class="line">            return;</span><br><span class="line">        &#125;</span><br><span class="line">        System.out.println(&quot;消息属性为：&quot;+properties);</span><br><span class="line">        System.out.println(&quot;消息内容为：&quot;+new String(body));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(10);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        this.getChannel().basicAck(envelope.getDeliveryTag(),false);</span><br><span class="line">        System.out.println(&quot;消息消费成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>控制台打印，因为设置了不重新入队列，所以不再重新发消息了：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">amq.ctag-kiy_49AkC3f4qRkqCMujrw</span><br><span class="line">amq.ctag-kiy_49AkC3f4qRkqCMujrw</span><br><span class="line">-----收到消息了--------------</span><br><span class="line">消息无法消费，拒绝消息</span><br></pre></td></tr></table></figure></p>
+<p><strong>总结</strong><br>消费端的消息确认分为二个步骤，</p>
+<ul>
+<li>在channel.basicConsume指定为手动确认。</li>
+<li>具体根据业务逻辑来进行判断什么是ack什么时候nack（又分为要不要重新requeue）</li>
+</ul>
+<p>这边有个问题就是nack时候或者reject时候重新入队列如果业务端因为代码逻辑问题一直重发怎样去设置一个次数值？<br>我的设想就是设置一个重新发送的递增值，这个值与消息id对应，去处理解决它。或者在redis或者memcache等其他保存方式然后记录这个重发次数。<br><a href="https://stackoverflow.com/questions/23158310/how-do-i-set-a-number-of-retry-attempts-in-rabbitmq" target="_blank" rel="external">How do I set a number of retry attempts in RabbitMQ?</a></p>
+<h3 id="Spring-AMQP消费端实现消息确认"><a href="#Spring-AMQP消费端实现消息确认" class="headerlink" title="Spring AMQP消费端实现消息确认"></a>Spring AMQP消费端实现消息确认</h3><h4 id="自动确认-1"><a href="#自动确认-1" class="headerlink" title="自动确认"></a>自动确认</h4><p>配置类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.AcknowledgeMode;</span><br><span class="line">import org.springframework.amqp.core.MessageListener;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">        container.setConnectionFactory(connectionFactory);</span><br><span class="line">        container.setQueueNames(&quot;zhihao.miao.order&quot;);</span><br><span class="line">        /**</span><br><span class="line">         * 自动确认涉及到一个问题就是如果在消息消息的时候抛出异常，消息处理失败，但是因为自动确认而server将该消息删除了。</span><br><span class="line">         * NONE表示自动确认</span><br><span class="line">         */</span><br><span class="line">        container.setAcknowledgeMode(AcknowledgeMode.NONE);</span><br><span class="line">        container.setMessageListener((MessageListener) message -&gt; &#123;</span><br><span class="line">            System.out.println(&quot;====接收到消息=====&quot;);</span><br><span class="line">            System.out.println(new String(message.getBody()));</span><br><span class="line"></span><br><span class="line">            try &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(10);</span><br><span class="line">            &#125; catch (InterruptedException e) &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            //相当于自己的一些消费逻辑抛错误</span><br><span class="line">            throw new NullPointerException(&quot;consumer fail&quot;);</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        return container;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>应用启动类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(100);</span><br><span class="line">        System.out.println(&quot;message container startup&quot;);</span><br><span class="line"></span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>控制台打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">====接收到消息=====</span><br><span class="line">&#123;&quot;orderId&quot;:&quot;d232eea5-35ae-4534-80f4-cfb31f49178f&quot;,&quot;createTime&quot;:&quot;2017-10-22T22:11:34.239&quot;,&quot;price&quot;:100.0&#125;</span><br><span class="line">十月 22, 2017 10:11:58 下午 org.springframework.amqp.rabbit.listener.ConditionalRejectingErrorHandler handleError</span><br><span class="line">警告: Execution of Rabbit message listener failed.</span><br><span class="line">org.springframework.amqp.rabbit.listener.exception.ListenerExecutionFailedException: Listener threw exception</span><br></pre></td></tr></table></figure></p>
+<p>Web控制台上显示消息消费确认也成功。问题还是自动确认会造成事实上的消息丢失。</p>
+<h3 id="手动确认-1"><a href="#手动确认-1" class="headerlink" title="手动确认"></a>手动确认</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.AcknowledgeMode;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.ChannelAwareMessageListener;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">        container.setConnectionFactory(connectionFactory);</span><br><span class="line">        container.setQueueNames(&quot;zhihao.miao.order&quot;);</span><br><span class="line"></span><br><span class="line">        container.setAcknowledgeMode(AcknowledgeMode.MANUAL);</span><br><span class="line">        container.setMessageListener((ChannelAwareMessageListener) (message, channel) -&gt; &#123;</span><br><span class="line">            System.out.println(&quot;====接收到消息=====&quot;);</span><br><span class="line">            System.out.println(new String(message.getBody()));</span><br><span class="line">            TimeUnit.SECONDS.sleep(10);</span><br><span class="line">            if(message.getMessageProperties().getHeaders().get(&quot;error&quot;) == null)&#123;</span><br><span class="line">                channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);</span><br><span class="line">                System.out.println(&quot;消息已经确认&quot;);</span><br><span class="line">            &#125;else &#123;</span><br><span class="line">                //channel.basicNack(message.getMessageProperties().getDeliveryTag(),false,false);</span><br><span class="line">                channel.basicReject(message.getMessageProperties().getDeliveryTag(),false);</span><br><span class="line">                System.out.println(&quot;消息拒绝&quot;);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        return container;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>总结</strong></p>
+<blockquote>
+<p>AcknowledgeMode.NONE：自动确认，等效于autoAck=true<br>AcknowledgeMode.MANUAL：手动确认，等效于autoAck=false，此时如果要实现ack和nack回执的话，使用ChannelAwareMessageListener监听器处理。</p>
+</blockquote>
+<h3 id="AcknowledgeMode-AUTO的使用"><a href="#AcknowledgeMode-AUTO的使用" class="headerlink" title="AcknowledgeMode.AUTO的使用"></a>AcknowledgeMode.AUTO的使用</h3><p>我们发现<code>AcknowledgeMode</code>除了<code>AcknowledgeMode.NONE</code>和<code>AcknowledgeMode.MANUAL</code>常量值之外还有一个<code>AcknowledgeMode.AUTO</code>的常量。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-cc96801dc1c72368.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt=""></p>
+<p>配置类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.AmqpRejectAndDontRequeueException;</span><br><span class="line">import org.springframework.amqp.ImmediateAcknowledgeAmqpException;</span><br><span class="line">import org.springframework.amqp.core.AcknowledgeMode;</span><br><span class="line">import org.springframework.amqp.core.MessageListener;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">        container.setConnectionFactory(connectionFactory);</span><br><span class="line">        container.setQueueNames(&quot;zhihao.miao.order&quot;);</span><br><span class="line">        container.setAcknowledgeMode(AcknowledgeMode.AUTO);</span><br><span class="line">        container.setMessageListener((MessageListener) (message) -&gt; &#123;</span><br><span class="line">            System.out.println(&quot;====接收到消息=====&quot;);</span><br><span class="line">            System.out.println(new String(message.getBody()));</span><br><span class="line">            //抛出NullPointerException异常则重新入队列</span><br><span class="line">            //throw new NullPointerException(&quot;消息消费失败&quot;);</span><br><span class="line">            //当抛出的异常是AmqpRejectAndDontRequeueException异常的时候，则消息会被拒绝，且requeue=false</span><br><span class="line">            //throw new AmqpRejectAndDontRequeueException(&quot;消息消费失败&quot;);</span><br><span class="line">            //当抛出ImmediateAcknowledgeAmqpException异常，则消费者会被确认</span><br><span class="line">            throw new ImmediateAcknowledgeAmqpException(&quot;消息消费失败&quot;);</span><br><span class="line"></span><br><span class="line">        &#125;);</span><br><span class="line">        return container;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>应用启动类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line"></span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(100);</span><br><span class="line">        System.out.println(&quot;message container startup&quot;);</span><br><span class="line"></span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>AcknowledgeMode.AUTO 根据方法的执行情况来决定是否确认还是拒绝（是否重新入queue）</p>
+<blockquote>
+<ul>
+<li>如果消息成功被消费（成功的意思就是在消费的过程中没有抛出异常），则自动确认。</li>
+<li>1）当抛出AmqpRejectAndDontRequeueException异常的时候，则消息会被拒绝，且requeue=false（不重新入队列）<br>2）当抛出ImmediateAcknowledgeAmqpException异常，则消费者会被确认<br>3）其他的异常，则消息会被拒绝，且requeue=true（如果此时只有一个消费者监听该队列，则有发生死循环的风险，多消费端也会造成资源的极大浪费，这个在开发过程中一定要避免的）。可以通过setDefaultRequeueRejected（默认是true）去设置，</li>
+</ul>
+</blockquote>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p><code>org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer</code>的<code>doReceiveAndExecute</code>方法，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">private boolean doReceiveAndExecute(BlockingQueueConsumer consumer) throws Throwable &#123; //NOSONAR</span><br><span class="line"></span><br><span class="line">	Channel channel = consumer.getChannel();</span><br><span class="line"></span><br><span class="line">	for (int i = 0; i &lt; this.txSize; i++) &#123;</span><br><span class="line"></span><br><span class="line">		logger.trace(&quot;Waiting for message from consumer.&quot;);</span><br><span class="line">		Message message = consumer.nextMessage(this.receiveTimeout);</span><br><span class="line">		if (message == null) &#123;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">		try &#123;</span><br><span class="line">		   //具体的逻辑，具体执行Listener</span><br><span class="line">			executeListener(channel, message);</span><br><span class="line">		&#125;</span><br><span class="line">		//当ImmediateAcknowledgeAmqpException异常的时候打印日志然后直接break</span><br><span class="line">		catch (ImmediateAcknowledgeAmqpException e) &#123;</span><br><span class="line">			if (this.logger.isDebugEnabled()) &#123;</span><br><span class="line">				this.logger.debug(&quot;User requested ack for failed delivery: &quot;</span><br><span class="line">						+ message.getMessageProperties().getDeliveryTag());</span><br><span class="line">			&#125;</span><br><span class="line">			break;</span><br><span class="line">		&#125;</span><br><span class="line">		catch (Throwable ex) &#123; //NOSONAR</span><br><span class="line">			if (causeChainHasImmediateAcknowledgeAmqpException(ex)) &#123;</span><br><span class="line">				if (this.logger.isDebugEnabled()) &#123;</span><br><span class="line">					this.logger.debug(&quot;User requested ack for failed delivery: &quot;</span><br><span class="line">							+ message.getMessageProperties().getDeliveryTag());</span><br><span class="line">				&#125;</span><br><span class="line">				break;</span><br><span class="line">			&#125;</span><br><span class="line">			if (this.transactionManager != null) &#123;</span><br><span class="line">				if (this.transactionAttribute.rollbackOn(ex)) &#123;</span><br><span class="line">					RabbitResourceHolder resourceHolder = (RabbitResourceHolder) TransactionSynchronizationManager</span><br><span class="line">							.getResource(getConnectionFactory());</span><br><span class="line">					if (resourceHolder != null) &#123;</span><br><span class="line">						consumer.clearDeliveryTags();</span><br><span class="line">					&#125;</span><br><span class="line">					else &#123;</span><br><span class="line">						/*</span><br><span class="line">						 * If we don&apos;t actually have a transaction, we have to roll back</span><br><span class="line">						 * manually. See prepareHolderForRollback().</span><br><span class="line">						 */</span><br><span class="line">						consumer.rollbackOnExceptionIfNecessary(ex);</span><br><span class="line">					&#125;</span><br><span class="line">					throw ex; // encompassing transaction will handle the rollback.</span><br><span class="line">				&#125;</span><br><span class="line">				else &#123;</span><br><span class="line">					if (this.logger.isDebugEnabled()) &#123;</span><br><span class="line">						this.logger.debug(&quot;No rollback for &quot; + ex);</span><br><span class="line">					&#125;</span><br><span class="line">					break;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			else &#123;</span><br><span class="line">			   //进入这边</span><br><span class="line">				consumer.rollbackOnExceptionIfNecessary(ex);</span><br><span class="line">				throw ex;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return consumer.commitIfNecessary(isChannelLocallyTransacted(channel));</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>进入<code>rollbackOnExceptionIfNecessary</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">public void rollbackOnExceptionIfNecessary(Throwable ex) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">  //当ack机制为AUTO的时候</span><br><span class="line">	boolean ackRequired = !this.acknowledgeMode.isAutoAck() &amp;&amp; !this.acknowledgeMode.isManual();</span><br><span class="line">	try &#123;</span><br><span class="line">		if (this.transactional) &#123;</span><br><span class="line">			if (logger.isDebugEnabled()) &#123;</span><br><span class="line">				logger.debug(&quot;Initiating transaction rollback on application exception: &quot; + ex);</span><br><span class="line">			&#125;</span><br><span class="line">			RabbitUtils.rollbackIfNecessary(this.channel);</span><br><span class="line">		&#125;</span><br><span class="line">		if (ackRequired) &#123;</span><br><span class="line">		   //是否入队列，shouldRequeue就是具体的入队列和不入队列的判断</span><br><span class="line">			boolean shouldRequeue = RabbitUtils.shouldRequeue(this.defaultRequeuRejected, ex, logger);</span><br><span class="line">			for (Long deliveryTag : this.deliveryTags) &#123;</span><br><span class="line">				// With newer RabbitMQ brokers could use basicNack here...</span><br><span class="line">				//执行拒绝策略</span><br><span class="line">				this.channel.basicReject(deliveryTag, shouldRequeue);</span><br><span class="line">			&#125;</span><br><span class="line">			if (this.transactional) &#123;</span><br><span class="line">				// Need to commit the reject (=nack)</span><br><span class="line">				RabbitUtils.commitIfNecessary(this.channel);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	catch (Exception e) &#123;</span><br><span class="line">		logger.error(&quot;Application exception overridden by rollback exception&quot;, ex);</span><br><span class="line">		throw e;</span><br><span class="line">	&#125;</span><br><span class="line">	finally &#123;</span><br><span class="line">		this.deliveryTags.clear();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>是否入队列的判断（<code>shouldRequeue</code>）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public static boolean shouldRequeue(boolean defaultRequeueRejected, Throwable throwable, Log logger) &#123;</span><br><span class="line">	boolean shouldRequeue = defaultRequeueRejected ||</span><br><span class="line">			throwable instanceof MessageRejectedWhileStoppingException;</span><br><span class="line">	Throwable t = throwable;</span><br><span class="line">	while (shouldRequeue &amp;&amp; t != null) &#123;</span><br><span class="line">	   //如果抛出的异常是AmqpRejectAndDontRequeueException的时候，不入队列</span><br><span class="line">		if (t instanceof AmqpRejectAndDontRequeueException) &#123;</span><br><span class="line">			shouldRequeue = false;</span><br><span class="line">		&#125;</span><br><span class="line">		t = t.getCause();</span><br><span class="line">	&#125;</span><br><span class="line">	if (logger.isDebugEnabled()) &#123;</span><br><span class="line">		logger.debug(&quot;Rejecting messages (requeue=&quot; + shouldRequeue + &quot;)&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	return shouldRequeue;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><code>container.setDefaultRequeueRejected(false);</code>，那么消息就不会重新入队列，只会拒绝一次。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">@Bean</span><br><span class="line">public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">    SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">    container.setConnectionFactory(connectionFactory);</span><br><span class="line">    container.setQueueNames(&quot;zhihao.miao.order&quot;);</span><br><span class="line">    //自动确认涉及到一个问题就是如果在消息消息的时候抛出异常，消息处理失败，但是因为自动确认而server将该消息删除了。</span><br><span class="line">    //NONE表示自动确认</span><br><span class="line">    container.setAcknowledgeMode(AcknowledgeMode.AUTO);</span><br><span class="line">    container.setDefaultRequeueRejected(false);</span><br><span class="line">    container.setMessageListener((MessageListener) (message) -&gt; &#123;</span><br><span class="line">        System.out.println(&quot;====接收到消息=====&quot;);</span><br><span class="line">        System.out.println(new String(message.getBody()));</span><br><span class="line">        throw new NullPointerException(&quot;消息消费失败&quot;);</span><br><span class="line">        //throw new AmqpRejectAndDontRequeueException(&quot;消息消费失败&quot;);</span><br><span class="line">        //throw new ImmediateAcknowledgeAmqpException(&quot;消息消费失败&quot;);</span><br><span class="line"></span><br><span class="line">    &#125;);</span><br><span class="line">    return container;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="使用-RabbitListener注解监听队列"><a href="#使用-RabbitListener注解监听队列" class="headerlink" title="使用@RabbitListener注解监听队列"></a>使用@RabbitListener注解监听队列</h2><p>设置确认模式是通过在容器中设置RabbitListenerContainerFactory实例的setAcknowledgeMode方法来设定。</p>
+<p>  配置：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.AcknowledgeMode;</span><br><span class="line">import org.springframework.amqp.core.Message;</span><br><span class="line">import org.springframework.amqp.core.MessageProperties;</span><br><span class="line">import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;</span><br><span class="line">import org.springframework.amqp.support.converter.MessageConversionException;</span><br><span class="line">import org.springframework.amqp.support.converter.MessageConverter;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class ConsumerConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitListenerContainerFactory&lt;?&gt; rabbitListenerContainerFactory(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();</span><br><span class="line">        factory.setConnectionFactory(connectionFactory);</span><br><span class="line">        //默认的确认模式是AcknowledgeMode.AUTO</span><br><span class="line">        factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>处理器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import org.springframework.amqp.rabbit.annotation.RabbitHandler;</span><br><span class="line">import org.springframework.amqp.rabbit.annotation.RabbitListener;</span><br><span class="line">import org.springframework.amqp.support.AmqpHeaders;</span><br><span class="line">import org.springframework.messaging.handler.annotation.Header;</span><br><span class="line">import org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line">import java.util.concurrent.CountDownLatch;</span><br><span class="line"></span><br><span class="line">@Component</span><br><span class="line">public class MessageHandler &#123;</span><br><span class="line"></span><br><span class="line">    @RabbitListener(queues =&quot;zhihao.miao.order&quot;)</span><br><span class="line">    public void handleMessage(byte[] bytes, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;====消费消息===handleMessage&quot;);</span><br><span class="line">        System.out.println(new String(bytes));</span><br><span class="line">        channel.basicAck(tag,false);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>应用启动类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.rabbit.annotation.EnableRabbit;</span><br><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@EnableRabbit</span><br><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line">        System.out.println(&quot;rabbit service startup&quot;);</span><br><span class="line">        TimeUnit.SECONDS.sleep(3000);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="可靠消息总结"><a href="#可靠消息总结" class="headerlink" title="可靠消息总结"></a>可靠消息总结</h2><p>实际使用mq的实例，每段时间定期的给经常订早餐的推送短信（上新品）。<br>登录短信（也是使用消息中间件）<br>下单的时候，使用消息中间件发送到配送系统(消息不能丢失）。</p>
+<p>做到消息不能丢失，我们就要实现可靠消息，做到这一点，我们要做到下面二点：</p>
+<blockquote>
+<p>一：持久化<br>1: exchange要持久化<br>2: queue要持久化<br>3: message要持久化<br>二：消息确认<br>1: 启动消费返回（@ReturnList注解，生产者就可以知道哪些消息没有发出去）<br>2：生产者和Server（broker）之间的消息确认。<br>3: 消费者和Server（broker）之间的消息确认。</p>
+</blockquote>
+<p>对于重要的消息，要结合本地的消息表才能上生产。</p>
+<p><a href="http://www.rabbitmq.com/confirms.html" target="_blank" rel="external">参考资料Consumer Acknowledgements and Publisher Confirms</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/Alternate Exchange/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Alternate Exchange
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/消息确认之一（Publisher Confirms）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">消息确认之一（Publisher Confirms）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="消息确认之二（Consumer Acknowledgements）" data-title="消息确认之二（Consumer Acknowledgements）" data-url="http://baixin.io/2017/12/19/消息确认之二（Consumer Acknowledgements）/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

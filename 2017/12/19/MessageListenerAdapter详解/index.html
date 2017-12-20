@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>MessageListenerAdapter详解 | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="MessageListenerAdapter详解
+Message listener adapter that delegates the handling of messages to target listener methods via reflection, with flexible message type conversion. Allows listener methods to o">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MessageListenerAdapter详解">
+<meta property="og:url" content="http://baixin.io/2017/12/19/MessageListenerAdapter详解/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="MessageListenerAdapter详解
+Message listener adapter that delegates the handling of messages to target listener methods via reflection, with flexible message type conversion. Allows listener methods to o">
+<meta property="og:updated_time" content="2017-12-19T12:18:45.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MessageListenerAdapter详解">
+<meta name="twitter:description" content="MessageListenerAdapter详解
+Message listener adapter that delegates the handling of messages to target listener methods via reflection, with flexible message type conversion. Allows listener methods to o">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-MessageListenerAdapter详解" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/MessageListenerAdapter详解/" class="article-date">
+  	<time datetime="2017-12-19T12:18:01.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MessageListenerAdapter详解
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="MessageListenerAdapter详解"><a href="#MessageListenerAdapter详解" class="headerlink" title="MessageListenerAdapter详解"></a>MessageListenerAdapter详解</h2><blockquote>
+<p>Message listener adapter that delegates the handling of messages to target listener methods via reflection, with flexible message type conversion. Allows listener methods to operate on message content types, completely independent from the Rabbit API.<br>消息监听适配器（adapter），通过反射将消息处理委托给目标监听器的处理方法，并进行灵活的消息类型转换。允许监听器方法对消息内容类型进行操作，完全独立于Rabbit API。</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>By default, the content of incoming Rabbit messages gets extracted before being passed into the target listener method, to let the target method operate on message content types such as String or byte array instead of the raw<br>Message. Message type conversion is delegated to a Spring AMQ  MessageConverter. By default, a  SimpleMessageConverter will be used. (If you do not want such automatic message conversion taking place, then be sure to set the #setMessageConverter MessageConverter to null.)<br>默认情况下，传入Rabbit消息的内容在被传递到目标监听器方法之前被提取，以使目标方法对消息内容类型进行操作以String或者byte类型进行操作，而不是原始Message类型。 （消息转换器）<br>消息类型转换委托给<code>MessageConverter</code>接口的实现类。 默认情况下，将使用<code>SimpleMessageConverter</code>。 （如果您不希望进行这样的自动消息转换，<br>那么请自己通过<code>#setMessageConverter MessageConverter</code>设置为null）</p>
+<p>If a target listener method returns a non-null object (typically of a message content type such as String or byte array), it will get wrapped in a Rabbit Message and sent to the exchange of the incoming message with the routingKey that comes from the Rabbit ReplyTo property or via <code>#setResponseRoutingKey(String)</code> specified routingKey).<br>如果目标监听器方法返回一个非空对象（通常是消息内容类型，例如String或byte数组），它将被包装在一个Rabbit Message 中，并发送使用来自<code>Rabbit ReplyTo</code>属性或通过<code>#setResponseRoutingKey(String)</code>指定的<code>routingKey</code>的<code>routingKey</code>来传送消息。（使用rabbitmq 来实现异步rpc功能时候会使用到这个属性）。</p>
+<p>Note:The sending of response messages is only available when using the ChannelAwareMessageListener entry point (typically through a Spring message listener container). Usage as  MessageListener does not support the generation of response messages.<br>注意：发送响应消息仅在使用ChannelAwareMessageListener入口点（通常通过Spring消息监听器容器）时可用。 用作MessageListener不支持生成响应消息。</p>
+</blockquote>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>配置类MQConfig：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.Map;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        rabbitTemplate.setExchange(&quot;zhihao.direct.exchange&quot;);</span><br><span class="line">        rabbitTemplate.setRoutingKey(&quot;zhihao.debug&quot;);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">        container.setConnectionFactory(connectionFactory);</span><br><span class="line">        container.setQueueNames(&quot;order&quot;,&quot;pay&quot;,&quot;zhihao.miao.order&quot;);</span><br><span class="line"></span><br><span class="line">        MessageListenerAdapter adapter = new MessageListenerAdapter(new MessageHandler());</span><br><span class="line">        //设置处理器的消费消息的默认方法,如果没有设置，那么默认的处理器中的默认方式是handleMessage方法</span><br><span class="line">        adapter.setDefaultListenerMethod(&quot;onMessage&quot;);</span><br><span class="line">        Map&lt;String, String&gt; queueOrTagToMethodName = new HashMap&lt;&gt;();</span><br><span class="line">        queueOrTagToMethodName.put(&quot;order&quot;,&quot;onorder&quot;);</span><br><span class="line">        queueOrTagToMethodName.put(&quot;pay&quot;,&quot;onpay&quot;);</span><br><span class="line">        queueOrTagToMethodName.put(&quot;zhihao.miao.order&quot;,&quot;oninfo&quot;);</span><br><span class="line">        adapter.setQueueOrTagToMethodName(queueOrTagToMethodName);</span><br><span class="line">        container.setMessageListener(adapter);</span><br><span class="line"></span><br><span class="line">        return container;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Handler类<code>MessageHandler</code>，<code>MessageHandler</code>类中定义的方法也就是上面翻译的目标监听器的处理方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">public class MessageHandler &#123;</span><br><span class="line"></span><br><span class="line">    //没有设置默认的处理方法的时候，方法名是handleMessage</span><br><span class="line">    public void handleMessage(byte[] message)&#123;</span><br><span class="line">        System.out.println(&quot;---------handleMessage-------------&quot;);</span><br><span class="line">        System.out.println(new String(message));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    //通过设置setDefaultListenerMethod时候指定的方法名</span><br><span class="line">    public void onMessage(byte[] message)&#123;</span><br><span class="line">        System.out.println(&quot;---------onMessage-------------&quot;);</span><br><span class="line">        System.out.println(new String(message));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    //以下指定不同的队列不同的处理方法名</span><br><span class="line">    public void onorder(byte[] message)&#123;</span><br><span class="line">        System.out.println(&quot;---------onorder-------------&quot;);</span><br><span class="line">        System.out.println(new String(message));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void onpay(byte[] message)&#123;</span><br><span class="line">        System.out.println(&quot;---------onpay-------------&quot;);</span><br><span class="line">        System.out.println(new String(message));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void oninfo(byte[] message)&#123;</span><br><span class="line">        System.out.println(&quot;---------oninfo-------------&quot;);</span><br><span class="line">        System.out.println(new String(message));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>启动应用类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line">        System.out.println(&quot;===start up======&quot;);</span><br><span class="line">        TimeUnit.SECONDS.sleep(60);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>总结</strong></p>
+<p>使用<code>MessageListenerAdapter</code>处理器进行消息队列监听处理，如果容器没有设置<code>setDefaultListenerMethod</code>，则处理器中默认的处理方法名是handleMessage，如果设置了<code>setDefaultListenerMethod</code>，则处理器中处理消息的方法名就是<code>setDefaultListenerMethod</code>方法参数设置的值。也可以通过<code>setQueueOrTagToMethodName</code>方法为不同的队列设置不同的消息处理方法。</p>
+<h2 id="源码分析："><a href="#源码分析：" class="headerlink" title="源码分析："></a>源码分析：</h2><p>我们知道<code>MessageListenerAdapter</code>继承<code>AbstractAdaptableMessageListener</code>类，实现<code>MessageListener</code>和<code>ChannelAwareMessageListener</code>接口，而我们知道<code>MessageListener</code>和<code>ChannelAwareMessageListener</code>接口的<code>onMessage</code>方法就是具体容器监听队列处理队列消息的方法。</p>
+<p><code>MessageListenerAdapter</code>的<code>onMessage</code>方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public void onMessage(Message message, Channel channel) throws Exception &#123;</span><br><span class="line">	// Check whether the delegate is a MessageListener impl itself.</span><br><span class="line">	// In that case, the adapter will simply act as a pass-through.</span><br><span class="line">	Object delegate = getDelegate();</span><br><span class="line">	if (delegate != this) &#123;</span><br><span class="line">		if (delegate instanceof ChannelAwareMessageListener) &#123;</span><br><span class="line">			if (channel != null) &#123;</span><br><span class="line">				((ChannelAwareMessageListener) delegate).onMessage(message, channel);</span><br><span class="line">				return;</span><br><span class="line">			&#125;</span><br><span class="line">			else if (!(delegate instanceof MessageListener)) &#123;</span><br><span class="line">				throw new AmqpIllegalStateException(&quot;MessageListenerAdapter cannot handle a &quot;</span><br><span class="line">						+ &quot;ChannelAwareMessageListener delegate if it hasn&apos;t been invoked with a Channel itself&quot;);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		if (delegate instanceof MessageListener) &#123;</span><br><span class="line">			((MessageListener) delegate).onMessage(message);</span><br><span class="line">			return;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Regular case: find a handler method reflectively.</span><br><span class="line">	Object convertedMessage = extractMessage(message);</span><br><span class="line">	//获取处理消息的方法名</span><br><span class="line">	String methodName = getListenerMethodName(message, convertedMessage);</span><br><span class="line">	if (methodName == null) &#123;</span><br><span class="line">		throw new AmqpIllegalStateException(&quot;No default listener method specified: &quot;</span><br><span class="line">				+ &quot;Either specify a non-null value for the &apos;defaultListenerMethod&apos; property or &quot;</span><br><span class="line">				+ &quot;override the &apos;getListenerMethodName&apos; method.&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	// Invoke the handler method with appropriate arguments.</span><br><span class="line">	Object[] listenerArguments = buildListenerArguments(convertedMessage);</span><br><span class="line">	Object result = invokeListenerMethod(methodName, listenerArguments, message);</span><br><span class="line">	if (result != null) &#123;</span><br><span class="line">		handleResult(result, message, channel);</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		logger.trace(&quot;No result object given - no result to handle&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>获取处理消息的方法名<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">protected String getListenerMethodName(Message originalMessage, Object extractedMessage) throws Exception &#123;</span><br><span class="line">	if (this.queueOrTagToMethodName.size() &gt; 0) &#123;</span><br><span class="line">		MessageProperties props = originalMessage.getMessageProperties();</span><br><span class="line">		String methodName = this.queueOrTagToMethodName.get(props.getConsumerQueue());</span><br><span class="line">		if (methodName == null) &#123;</span><br><span class="line">			methodName = this.queueOrTagToMethodName.get(props.getConsumerTag());</span><br><span class="line">		&#125;</span><br><span class="line">		if (methodName != null) &#123;</span><br><span class="line">			return methodName;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return getDefaultListenerMethod();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><p><code>MessageListenerAdapter</code><br>1.可以把一个没有实现<code>MessageListener</code>和<code>ChannelAwareMessageListener</code>接口的类适配成一个可以处理消息的处理器<br>2.默认的方法名称为：<code>handleMessage</code>，可以通过<code>setDefaultListenerMethod</code>设置新的消息处理方法<br>3.<code>MessageListenerAdapter</code>支持不同的队列交给不同的方法去执行。使用<code>setQueueOrTagToMethodName</code>方法设置，当根据queue名称没有找到匹配的方法的时候，就会交给默认的方法去处理。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/MessageConverter详解/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          MessageConverter详解
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/SimpleMessageListenerContainer更多用法/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">SimpleMessageListenerContainer更多用法</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="MessageListenerAdapter详解" data-title="MessageListenerAdapter详解" data-url="http://baixin.io/2017/12/19/MessageListenerAdapter详解/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>异步RPC之一（java client实现RPC功能） | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="异步RPC（Remote procedure call）
+Server：提供服务的服务，即RPC模型中的Server。Client：调用服务的服务，即RPC模型中的client。
+Client发送消息给服务端，消息中包含二个属性，一个是reply_to属性（value是一个队列名，客户端服务一直监听这个队列），一个是correkation_id(本次请求的唯一标识），发送消息调用Server服务之">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步RPC之一（java client实现RPC功能）">
+<meta property="og:url" content="http://baixin.io/2017/12/19/异步RPC之一（java client实现RPC功能）/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="异步RPC（Remote procedure call）
+Server：提供服务的服务，即RPC模型中的Server。Client：调用服务的服务，即RPC模型中的client。
+Client发送消息给服务端，消息中包含二个属性，一个是reply_to属性（value是一个队列名，客户端服务一直监听这个队列），一个是correkation_id(本次请求的唯一标识），发送消息调用Server服务之">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-619fdbe0c0fc3449.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-ab9a8eb773090352.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2017-12-19T12:40:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="异步RPC之一（java client实现RPC功能）">
+<meta name="twitter:description" content="异步RPC（Remote procedure call）
+Server：提供服务的服务，即RPC模型中的Server。Client：调用服务的服务，即RPC模型中的client。
+Client发送消息给服务端，消息中包含二个属性，一个是reply_to属性（value是一个队列名，客户端服务一直监听这个队列），一个是correkation_id(本次请求的唯一标识），发送消息调用Server服务之">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-619fdbe0c0fc3449.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-异步RPC之一（java client实现RPC功能）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/异步RPC之一（java client实现RPC功能）/" class="article-date">
+  	<time datetime="2017-12-19T12:28:41.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      异步RPC之一（java client实现RPC功能）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="异步RPC（Remote-procedure-call）"><a href="#异步RPC（Remote-procedure-call）" class="headerlink" title="异步RPC（Remote procedure call）"></a>异步RPC（Remote procedure call）</h2><p><img src="http://upload-images.jianshu.io/upload_images/5225109-619fdbe0c0fc3449.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="模型图"></p>
+<p>Server：提供服务的服务，即RPC模型中的Server。<br>Client：调用服务的服务，即RPC模型中的client。</p>
+<p>Client发送消息给服务端，消息中包含二个属性，一个是reply_to属性（value是一个队列名，客户端服务一直监听这个队列），一个是correkation_id(本次请求的唯一标识），发送消息调用Server服务之后，服务端将调用结果发送到reply_to指定的队列中。当前也会根据客户端得到correlation_id，并指明这次结果与correlation_id对应。</p>
+<a id="more"></a>
+<h3 id="java-client实现RPC功能"><a href="#java-client实现RPC功能" class="headerlink" title="java client实现RPC功能"></a>java client实现RPC功能</h3><p><strong>服务端代码,监听sms队列（客户端请求消息发送到的队列）</strong>：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.Connection;</span><br><span class="line">import com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class Consume &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = new ConnectionFactory();</span><br><span class="line">        connectionFactory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        System.out.println(channel.queueDeclare().getQueue());</span><br><span class="line"></span><br><span class="line">        channel.basicConsume(&quot;sms&quot;,true,new SimpleConsumer(channel));</span><br><span class="line">        System.out.println(&quot;短信服务已经启动&quot;);</span><br><span class="line">        TimeUnit.SECONDS.sleep(60);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接收到客户端的消息之后，调用服务接口sendSMS方法，然后得到请求消息中的<code>reply_to</code>和<code>correlation_id</code>属性，将调用接口的结果发送到<code>reply_to</code>属性的队列中，指定<code>correlation_id</code>属性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line">import com.zhihao.miao.rpc.server.SendSMSTool;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;进入RPC方法调用&quot;);</span><br><span class="line">        String phone =properties.getHeaders().get(&quot;phone&quot;).toString();</span><br><span class="line">        String content = new String(body);</span><br><span class="line">        //调用服务</span><br><span class="line">        boolean result = SendSMSTool.sendSMS(phone,content);</span><br><span class="line">        System.out.println(&quot;消息处理成功&quot;);</span><br><span class="line"></span><br><span class="line">        String reply = properties.getReplyTo();</span><br><span class="line">        String id = properties.getCorrelationId();</span><br><span class="line"></span><br><span class="line">        AMQP.BasicProperties props = new AMQP.BasicProperties.Builder().correlationId(id).build();</span><br><span class="line">        this.getChannel().basicPublish(&quot;&quot;,reply,props,(result+&quot;&quot;).getBytes());</span><br><span class="line">        System.out.println(&quot;消息回复成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>服务接口：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class SendSMSTool &#123;</span><br><span class="line"></span><br><span class="line">    public static boolean sendSMS(String phone,String content)&#123;</span><br><span class="line">        System.out.println(&quot;发送短信内容：【&quot;+content+&quot;】到手机号：&quot;+phone);</span><br><span class="line">        return phone.length() &gt; 6;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>总结</strong><br><strong>RPC Server步骤</strong>：<br>1.创建服务<br>2.监听一个队列（sms），监听客户端发送的消息<br>3.收到消息之后，调用服务，得到调用结果<br>4.从消息属性中，获取reply_to, correlation_id属性，把调用结果发送给reply_to指定的队列中，发送的消息属性要带上reply_to。<br>5.一次调用处理成功</p>
+</blockquote>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-ab9a8eb773090352.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="Exchange绑定sms队列"></p>
+<p><strong>客户端代码</strong>：<br>消息端先监听一个队列sms.reply，这个队列是客户端返回结果的队列，然后发送消息指定请求参数（参数头和参数内容），指定<code>correlationId</code>和<code>replyTo</code>属性。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.Connection;</span><br><span class="line">import com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.UUID;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class Send &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = new ConnectionFactory();</span><br><span class="line"></span><br><span class="line">        connectionFactory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        String correlationId = UUID.randomUUID().toString();</span><br><span class="line">        String replyTo = &quot;sms.reply&quot;;</span><br><span class="line">        //自动删除属性为true，当connection关闭后会自动删除该队列</span><br><span class="line">        //channel.queueDeclare(replyTo,true,true,true,new HashMap&lt;&gt;());</span><br><span class="line"></span><br><span class="line">        channel.basicConsume(replyTo,true,new SimpleConsumer(channel));</span><br><span class="line"></span><br><span class="line">        Map&lt;String,Object&gt; headers = new HashMap&lt;&gt;();</span><br><span class="line">        headers.put(&quot;phone&quot;,&quot;15790934342&quot;);</span><br><span class="line"></span><br><span class="line">        AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder().headers(headers).replyTo(replyTo).correlationId(correlationId).deliveryMode(2).</span><br><span class="line">                contentEncoding(&quot;UTF-8&quot;).build();</span><br><span class="line"></span><br><span class="line">        channel.basicPublish(&quot;send&quot;,&quot;sms&quot;,true,properties,&quot;周年庆6折大促销，只剩三天。详情登录****，去了解详情。&quot;.getBytes());</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(20);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接收到rpc调用返回接口的处理逻辑，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;====收到RPC调用 回复了=====&quot;);</span><br><span class="line">        System.out.println(properties.getCorrelationId()+&quot;,短信发送结果：&quot;+new String(body));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>总结</strong><br>RPC Client步骤：<br>1.监听reply_to对应的队列(RPC调用结果发送指定的队列）<br>2.发送消息，消息属性需要带上reply_to，correlation_id属性<br>3.服务端处理完成之后，reply_to对应的队列就会收到异步处理结果消息<br>4.收到消息之后，进行处理，根据消息属性的correlation_id找到对应的请求<br>5.一次客户端调用就完成了。</p>
+</blockquote>
+<p>说一下逻辑：<br>就是客户端往一个队列sms发送消息，服务端监听这个队列，接收到消息之后服务端在消息处理方法中调用服务，并把调用的服务结果返回给客户端，怎么返回呢（通过往一个队列里发送（sms.reply),并把这次调用的id也返回给客户端，这个队列名是reply_to属性，当前的返回id是correlation_id,都是在客户端往sms队列发送消息的时候带到服务端的），服务端将返回的结果发送到指定的队列，而客户端一直在监听这个队列拿到返回值，即完成了一次异步的rpc调用。</p>
+<h2 id="Direct-reply-to"><a href="#Direct-reply-to" class="headerlink" title="Direct reply-to"></a>Direct reply-to</h2><p>Improve performance and simplicity of RPC clients by sending replies direct to a waiting channel.<br>通过直接将RPC的回复发送到等待的Channel中而提供RPC客户端的性能。</p>
+<p><strong>动机（原因）</strong><br>RPC is a popular pattern to implement with a messaging broker like RabbitMQ. The typical way to do this is for RPC clients to send requests to a long lived server queue. The RPC server(s) read requests from this queue and then send replies to each client using the queue named by the client in the reply-to header.</p>
+<p> But where does the client’s queue come from? The client can declare a single-use queue for each request-response pair. But this is inefficient; even a transient unmirrored queue can be expensive to create and then delete (compared with the cost of sending a message). This is especially true in a cluster as all cluster nodes need to agree that the queue has been created, even if it is unmirrored.</p>
+<p>So alternatively the client can create a long-lived queue for its replies. But this can be fiddly to manage, especially if the client itself is not long-lived.</p>
+<p>The direct reply-to feature allows RPC clients to receive replies directly from their RPC server, without going through a reply queue. (“Directly” here still means going through AMQP and the RabbitMQ server; there is no separate network connection between RPC client and RPC server.)</p>
+<p>大意就是使用RabbitMQ实现异步RPC，通常的做法就是客户端将请求发送到长期存在的服务器队列。RPC服务器读取接收此队列的请求，然后将RPC调用结果返回到客户端在发送请求时请求头中的reply_to属性中的队列。完成一次异步的RPC调用。<br>那么请求头中的队列哪里来呢？客户端可以声明一个针对每一对请求的临时队列。但是开销太大（相比于发送消息本身），在集群环境中更是如此。<br>如果创建一个长期的队列呢？如果客户端本身并不是长期的那么这个长期的队列就很难管理。</p>
+<p>Direct reply-to就是解决这个问题的，不需要创建这样一个回复的队列。</p>
+<h2 id="示列"><a href="#示列" class="headerlink" title="示列"></a>示列</h2><p><strong>服务端</strong><br>服务启动类，监听sms队列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.Connection;</span><br><span class="line">import com.rabbitmq.client.ConnectionFactory;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class Consume &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = new ConnectionFactory();</span><br><span class="line">        connectionFactory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        System.out.println(channel.queueDeclare().getQueue());</span><br><span class="line"></span><br><span class="line">        channel.basicConsume(&quot;sms&quot;,true,new SimpleConsumer(channel));</span><br><span class="line">        System.out.println(&quot;短信服务已经启动&quot;);</span><br><span class="line">        TimeUnit.SECONDS.sleep(60);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>服务端监听消息处理器，接收到请求参数，调用服务接口，返回参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP.BasicProperties;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, BasicProperties properties, byte[] body) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;进入RPC方法调用&quot;);</span><br><span class="line">        String phone =properties.getHeaders().get(&quot;phone&quot;).toString();</span><br><span class="line">        String content = new String(body);</span><br><span class="line">        //调用服务</span><br><span class="line">        boolean result = SendSMSTool.sendSMS(phone,content);</span><br><span class="line">        System.out.println(&quot;消息处理成功&quot;);</span><br><span class="line"></span><br><span class="line">        String reply = properties.getReplyTo();</span><br><span class="line">        String id = properties.getCorrelationId();</span><br><span class="line"></span><br><span class="line">        BasicProperties props = new BasicProperties.Builder().correlationId(id).build();</span><br><span class="line">        this.getChannel().basicPublish(&quot;&quot;,reply,props,(result+&quot;&quot;).getBytes());</span><br><span class="line">        System.out.println(&quot;消息回复成功&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>服务接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class SendSMSTool &#123;</span><br><span class="line"></span><br><span class="line">    public static boolean sendSMS(String phone,String content)&#123;</span><br><span class="line">        System.out.println(&quot;发送短信内容：【&quot;+content+&quot;】到手机号：&quot;+phone);</span><br><span class="line">        return phone.length() &gt; 6;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>客户端</strong><br>改变的是客户端代码，直接定义<code>replyTo</code>为<code>amq.rabbitmq.reply-to</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.*;</span><br><span class="line"></span><br><span class="line">import java.util.HashMap;</span><br><span class="line">import java.util.Map;</span><br><span class="line">import java.util.UUID;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class Send &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = new ConnectionFactory();</span><br><span class="line"></span><br><span class="line">        connectionFactory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        String correlationId = UUID.randomUUID().toString();</span><br><span class="line"></span><br><span class="line">        String replyTo =&quot;amq.rabbitmq.reply-to&quot;;</span><br><span class="line"></span><br><span class="line">        channel.basicConsume(replyTo,true,new SimpleConsumer(channel));</span><br><span class="line"></span><br><span class="line">        Map&lt;String,Object&gt; headers = new HashMap&lt;&gt;();</span><br><span class="line">        headers.put(&quot;phone&quot;,&quot;15790934342&quot;);</span><br><span class="line"></span><br><span class="line">        AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder().headers(headers).replyTo(replyTo).correlationId(correlationId).deliveryMode(2).</span><br><span class="line">                contentEncoding(&quot;UTF-8&quot;).build();</span><br><span class="line"></span><br><span class="line">        channel.basicPublish(&quot;send&quot;,&quot;sms&quot;,true,properties,&quot;周年庆6折大促销，只剩三天。详情登录****，去了解详情。&quot;.getBytes());</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(20);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>定义消息监听消费者<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import com.rabbitmq.client.AMQP;</span><br><span class="line">import com.rabbitmq.client.Channel;</span><br><span class="line">import com.rabbitmq.client.DefaultConsumer;</span><br><span class="line">import com.rabbitmq.client.Envelope;</span><br><span class="line"></span><br><span class="line">import java.io.IOException;</span><br><span class="line"></span><br><span class="line">public class SimpleConsumer extends DefaultConsumer &#123;</span><br><span class="line"></span><br><span class="line">    public SimpleConsumer(Channel channel)&#123;</span><br><span class="line">        super(channel);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Override</span><br><span class="line">    public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException &#123;</span><br><span class="line">        System.out.println(&quot;====收到RPC调用恢复了=====&quot;);</span><br><span class="line">        System.out.println(properties.getCorrelationId()+&quot;,短信发送结果：&quot;+new String(body));</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>管控台中也不会创建<code>amq.rabbitmq.reply-to</code>这个队列，而是直接将返回的消息发到等到的Channel中，提升异步rpc调用的性能，<code>amq.rabbitmq.reply-to</code>也叫做伪队列。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://www.rabbitmq.com/tutorials/tutorial-six-python.html" target="_blank" rel="external">Remote procedure call (RPC)</a><br><a href="http://www.rabbitmq.com/direct-reply-to.html" target="_blank" rel="external">Direct reply-to</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/异步RPC之二（使用Spring AMQP实现RPC异步调用）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          异步RPC之二（使用Spring AMQP实现RPC异步调用）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/priority queue/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">priority queue</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="异步RPC之一（java client实现RPC功能）" data-title="异步RPC之一（java client实现RPC功能）" data-url="http://baixin.io/2017/12/19/异步RPC之一（java client实现RPC功能）/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

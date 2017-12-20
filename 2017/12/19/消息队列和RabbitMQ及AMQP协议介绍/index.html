@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>消息队列和RabbitMQ及AMQP协议介绍 | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="为什么要使用消息队列
+异步处理
+系统解耦解耦是消息中间队列解决的最本质问题。所谓解耦，简单一点就是一个事务，只关心核心的流程。而需要依赖其他系统但不那么重要的事情，有通知即可，无需等待结果。换句话说，关心的是“通知，而非“处理”。比如下单过程中，需要发送短信积分，如果下游系统过慢（比如短信网关速度不好），主流程一直在等待。用户肯定不希望支付下单的过程中几分钟之后才得到结果。那么我们只需要通知短信系">
+<meta property="og:type" content="article">
+<meta property="og:title" content="消息队列和RabbitMQ及AMQP协议介绍">
+<meta property="og:url" content="http://baixin.io/2017/12/19/消息队列和RabbitMQ及AMQP协议介绍/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="为什么要使用消息队列
+异步处理
+系统解耦解耦是消息中间队列解决的最本质问题。所谓解耦，简单一点就是一个事务，只关心核心的流程。而需要依赖其他系统但不那么重要的事情，有通知即可，无需等待结果。换句话说，关心的是“通知，而非“处理”。比如下单过程中，需要发送短信积分，如果下游系统过慢（比如短信网关速度不好），主流程一直在等待。用户肯定不希望支付下单的过程中几分钟之后才得到结果。那么我们只需要通知短信系">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-46b106ffc590da68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2017-12-19T03:11:51.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="消息队列和RabbitMQ及AMQP协议介绍">
+<meta name="twitter:description" content="为什么要使用消息队列
+异步处理
+系统解耦解耦是消息中间队列解决的最本质问题。所谓解耦，简单一点就是一个事务，只关心核心的流程。而需要依赖其他系统但不那么重要的事情，有通知即可，无需等待结果。换句话说，关心的是“通知，而非“处理”。比如下单过程中，需要发送短信积分，如果下游系统过慢（比如短信网关速度不好），主流程一直在等待。用户肯定不希望支付下单的过程中几分钟之后才得到结果。那么我们只需要通知短信系">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-46b106ffc590da68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-消息队列和RabbitMQ及AMQP协议介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/消息队列和RabbitMQ及AMQP协议介绍/" class="article-date">
+  	<time datetime="2017-12-19T03:07:58.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      消息队列和RabbitMQ及AMQP协议介绍
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="为什么要使用消息队列"><a href="#为什么要使用消息队列" class="headerlink" title="为什么要使用消息队列"></a>为什么要使用消息队列</h2><ol>
+<li>异步处理</li>
+<li>系统解耦<br>解耦是消息中间队列解决的最本质问题。所谓解耦，简单一点就是一个事务，只关心核心的流程。而需要依赖其他系统但不那么重要的事情，有通知即可，无需等待结果。换句话说，关心的是“通知，而非“处理”。<br>比如下单过程中，需要发送短信积分，如果下游系统过慢（比如短信网关速度不好），主流程一直在等待。用户肯定不希望支付下单的过程中几分钟之后才得到结果。那么我们只需要通知短信系统“我们支付成功了”，不一定非要等待它处理完成。</li>
+</ol>
+<a id="more"></a>
+<ol>
+<li>流量削峰<br>试想上下游对于事件的处理能力是不同的。比如，Web前端每秒承受上千万的请求，并不是什么神奇的事情，只需要加多一点机器，再搭建一些LVS负载均衡设备和Nginx等即可。但数据库的处理能力却十分有限，即使使用SSD加分库分表，单机的处理能力仍然在万级。由于成本的考虑，我们不能奢求数据库的机器数量追上前端。<br>这种问题同样存在于系统和系统之间，如短信系统可能由于短板效应，速度卡在网关上（每秒几百次请求），跟前端的并发量不是一个数量级。但用户晚上个半分钟左右收到短信，一般是不会有太大问题的。如果没有消息队列，两个系统之间通过协商、滑动窗口等复杂的方案也不是说不能实现。但系统复杂性指数级增长，势必在上游或者下游做存储，并且要处理定时、拥塞等一系列问题。而且每当有处理能力有差距的时候，都需要单独开发一套逻辑来维护这套逻辑。所以，利用中间系统转储两个系统的通信内容，并在下游系统有能力处理这些消息的时候，再处理这些消息，是一套相对较通用的方式。</li>
+<li>广播<br>消息队列的基本功能之一是进行广播。如果没有消息队列，每当一个新的业务方接入，我们都要联调一次新接口。有了消息队列，我们只需要关心消息是否送达了队列，至于谁希望订阅，是下游的事情，无疑极大地减少了开发和联调的工作量。</li>
+<li>最终一致性<br>最终一致性指的是两个系统的状态保持一致，要么都成功，要么都失败。当然有个时间限制，理论上越快越好，但实际上在各种异常的情况下，可能会有一定延迟达到最终一致状态，但最后两个系统的状态是一样的。<br>业界有一些为“最终一致性”而生的消息队列，如Notify（阿里）、QMQ（去哪儿）等，其设计初衷，就是为了交易系统中的高可靠通知。</li>
+</ol>
+<p>本地事务维护业务变化和通知消息，一起落地（失败则一起回滚），然后RPC到达broker，在broker成功落地后，RPC返回成功，本地消息可以删除。否则本地消息一直靠定时任务轮询不断重发，这样就保证了消息可靠落地broker。<br>broker往consumer发送消息的过程类似，一直发送消息，直到consumer发送消费成功确认。</p>
+<p><strong>总结</strong>：<br>消息队列不是万能的。对于需要强事务保证而且延迟敏感的，RPC是优于消息队列的。<br>对于一些无关痛痒，或者对于别人非常重要但是对于自己不是那么关心的事情，可以利用消息队列去做。<br>支持最终一致性的消息队列，能够用来处理延迟不那么敏感的“分布式事务”场景，而且相对于笨重的分布式事务，可能是更优的处理方式。<br>当上下游系统处理能力存在差距的时候，利用消息队列做一个通用的“漏斗”。在下游有能力处理的时候，再进行分发。</p>
+<h2 id="为什么要选择RabbitMQ"><a href="#为什么要选择RabbitMQ" class="headerlink" title="为什么要选择RabbitMQ"></a>为什么要选择RabbitMQ</h2><ol>
+<li>基于AMQP协议</li>
+<li>高并发</li>
+<li>高性能</li>
+<li>高可用</li>
+<li>强大的社区支持，以及很多公司都在使用</li>
+<li>支持插件</li>
+<li>支持多语言</li>
+</ol>
+<h2 id="AMQP协议介绍"><a href="#AMQP协议介绍" class="headerlink" title="AMQP协议介绍"></a>AMQP协议介绍</h2><h3 id="出现背景"><a href="#出现背景" class="headerlink" title="出现背景"></a>出现背景</h3><p>越是大型的公司越是不可避免的使用来自众多供应商的MQ产品，来服务企业内部的不同应用。如果应用已经订阅了TIBCO MQ信息，若突然需要消费来自IBM MQ的消息，则实现起来会非常困难。这些产品使用不同的api，不同的协议，因而毫无疑问无法联合起来组成单一的总线。为了解决这个问题，Java Message Service(JMS)在2001年诞生了。JMS试图通过提供公共java api的方式，隐藏单独MQ产品供应商提供的实际接口，从而跨越了壁垒和解决了互通问题。从技术上讲，java应用程序只需要对JMS API编程，选择合适的MQ驱动即可。JMS会打理好其他部分的。问题是你在尝试使用单独编准化接口来整合众多不同的接口。这就像是把不同的类型的衣服粘在一起：缝合处终究会裂开。使用JMS（Java Message Service）的应用程序会变得更加脆弱。我们需要新的消息通信标准化方案。</p>
+<ul>
+<li>高级消息队列协议（AMQP）是面向消息的中间件的开放标准应用层协议。 AMQP的特征是消息导向，排队，路由（包括点对点和发布和订阅），可靠性和安全性。</li>
+<li>AMQP要求消息传递提供商和客户端的行为在不同供应商实现可互操作的情况下，以与SMTP，HTTP，FTP等相同的方式创建了可互操作的系统。 中间件的以前标准化发生在API级别（例如JMS），并且专注于使程序员与不同中间件实现的交互标准化，而不是提供多个实现之间（AMQP的实现）的互操作性。与定义API和消息传递实现必须提供的一组行为的JMS不同，AMQP是线级协议。 线级协议是以网络流作为字节流发送的数据格式的描述。 因此，无论实现语言如何，任何可以创建和解释符合此数据格式的消息的工具都可以与任何其他兼容工具进行互操作。</li>
+<li>AMQP协议是具有现代特征的二进制协议。一个提供统一消息服务的应用层标准高级消息队列协议，是应用层协议的一个开发标准，为面向消息的中间件设计。基于此协议的客户端与消息中间件可传递消息，并不受客户端/中间件不同产品，不同开发语言等条件的限制。</li>
+<li><p>AMQP是一种二进制应用层协议，旨在有效地支持各种消息应用和通信模式。 它提供流控制的面向消息的通信，其中包括消息传递保证，例如最多一次（每个消息被投递一次或从不投递消息），至少一次（每个消息肯定要被传递，但可以在不同的时间）和确定一次（其中消息将始终确定到达并仅执行一次），以及基于SASL和/或TLS的身份验证和/或加密。 它假定一个基本的可靠传输层协议，如传输控制协议（TCP）。</p>
+</li>
+<li><p>AMQP规范定义在几个层次中：（i）类型系统（传递的消息类型），（ii）用于将消息从一个进程转移到另一个进程的对称异步协议，（iii）标准的可扩展消息格式（iv）一系列的标准化但可扩展的“消息传递功能”。</p>
+</li>
+</ul>
+<p><strong>一些概念梳理</strong></p>
+<ul>
+<li>Server：又称为Broker。接收客户端连接，实现AMQP的服务器实体。</li>
+<li>Connection：连接，应用程序与Broker的网络连接。</li>
+<li>Channel：信道，几乎所有的操作都在Channel中进行，Channel是进行消息读写的通道。客户端可建立多个Channel，每个Channel代表一个会话任务。</li>
+<li>Message：消息。服务器和应用程序之间传递的数据，本质上就是一段数据，由Properties和Body组成。</li>
+<li>Exchange：交换机。接收消息，根据路由键转发消息到绑定的队列。</li>
+<li>Binding：Exchange和Queue之间的虚拟连接，binding中可以包含routing key。</li>
+<li>Routing key：一个虚拟地址，虚拟机可用它来确定如何路由一个特定消息。</li>
+<li>Queue：也称为Message Queue，消息队列，保存消息并将它们转发给消费者。</li>
+<li>Virtual Host：其实是一个虚拟概念。类似于权限控制组，一个Virtual Host里面可以有若干个Exchange和Queue，可以用来隔离Exchange和Queue。，同一个Virtual Host里面不能有相同名称的Exchange和Queue。但是权限控制的最小粒度是Virtual Host。（下面会讲到）</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-46b106ffc590da68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="AMQP协议模型"></p>
+<p><strong>总结</strong>：<br>生产者将消息发送到Exchange交换机的，不是发送到Queue上的，生产者不知道消息是谁消费，有哪些消费者消费。Exchange根据一定的路由规则将消息转发到Queue。<br>消费者是监听队列的，不知道是哪个生产者发送的。</p>
+<p><strong>AMQP我的理解</strong><br>一个开放的面向消息中间件的协议，所有此协议的实现可以进行互相操作，无论实现语言如何，任何符合此协议的数据格式的消息工具都可以与任何其他兼容工具进行互操作。而以前JMS（Java Message Service），将不同的中间件的实现进行API层次的标准化。</p>
+<p>###AMQP实现<br><a href="http://www.rabbitmq.com/" target="_blank" rel="external">RabbitMQ</a><br><a href="http://qpid.apache.org/" target="_blank" rel="external">Apache Qpid</a><br><a href="http://www.openamq.org" target="_blank" rel="external">OpenAMQ</a></p>
+<p><strong>参考资料</strong><br><a href="https://tech.meituan.com/mq-design.html" target="_blank" rel="external">消息中间件设计精要</a><br><a href="http://blog.csdn.net/column/details/rabbitmq.html" target="_blank" rel="external">RabbitMQ博客</a><br><a href="https://github.com/rabbitmq" target="_blank" rel="external">githut地址</a></p>
+<p><strong>AMQP参考资料</strong><br><a href="http://www.amqp.org/" target="_blank" rel="external">amqp官网</a><br><a href="http://www.amqp.org/resources/download" target="_blank" rel="external">amqp官网协议下载</a><br><a href="https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol" target="_blank" rel="external">amqp协议文档</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/RabbitMQ安装及其基本命令/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RabbitMQ安装及其基本命令
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/18/git的诞生/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">git的诞生</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="消息队列和RabbitMQ及AMQP协议介绍" data-title="消息队列和RabbitMQ及AMQP协议介绍" data-url="http://baixin.io/2017/12/19/消息队列和RabbitMQ及AMQP协议介绍/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

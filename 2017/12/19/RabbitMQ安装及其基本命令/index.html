@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>RabbitMQ安装及其基本命令 | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RabbitMQ的安装RabbitMQ下载地址
+RabbitMQ是由LShift提供的一个Advanced Message Queuing Protocol(AMQP)的开源实现，由以高性能，健壮以及可伸缩性出名的Erlang写成，因此也继承了这些优点。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RabbitMQ安装及其基本命令">
+<meta property="og:url" content="http://baixin.io/2017/12/19/RabbitMQ安装及其基本命令/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="RabbitMQ的安装RabbitMQ下载地址
+RabbitMQ是由LShift提供的一个Advanced Message Queuing Protocol(AMQP)的开源实现，由以高性能，健壮以及可伸缩性出名的Erlang写成，因此也继承了这些优点。">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-c358cda029d8ffa2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+<meta property="og:updated_time" content="2017-12-19T12:02:54.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RabbitMQ安装及其基本命令">
+<meta name="twitter:description" content="RabbitMQ的安装RabbitMQ下载地址
+RabbitMQ是由LShift提供的一个Advanced Message Queuing Protocol(AMQP)的开源实现，由以高性能，健壮以及可伸缩性出名的Erlang写成，因此也继承了这些优点。">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-c358cda029d8ffa2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-RabbitMQ安装及其基本命令" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/RabbitMQ安装及其基本命令/" class="article-date">
+  	<time datetime="2017-12-19T12:01:19.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      RabbitMQ安装及其基本命令
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="RabbitMQ的安装"><a href="#RabbitMQ的安装" class="headerlink" title="RabbitMQ的安装"></a>RabbitMQ的安装</h2><p><a href="http://www.rabbitmq.com/download.html" target="_blank" rel="external">RabbitMQ下载地址</a></p>
+<p>RabbitMQ是由LShift提供的一个Advanced Message Queuing Protocol(AMQP)的开源实现，由以高性能，健壮以及可伸缩性出名的Erlang写成，因此也继承了这些优点。</p>
+<a id="more"></a>
+<h3 id="二进制的安装方式，"><a href="#二进制的安装方式，" class="headerlink" title="二进制的安装方式，"></a>二进制的安装方式，</h3><p>我本地选择131这台服务器进行安装，修改hostname<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ifconfig</span><br><span class="line">eth1      Link encap:Ethernet  HWaddr 00:50:56:2F:74:85  </span><br><span class="line">          inet addr:192.168.1.131  Bcast:192.168.1.255  Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fe80::250:56ff:fe2f:7485/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:22129 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:8960 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000 </span><br><span class="line">          RX bytes:29664818 (28.2 MiB)  TX bytes:581671 (568.0 KiB)</span><br><span class="line"></span><br><span class="line">lo        Link encap:Local Loopback  </span><br><span class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</span><br><span class="line">          inet6 addr: ::1/128 Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:16436  Metric:1</span><br><span class="line">          RX packets:4 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:4 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0 </span><br><span class="line">          RX bytes:240 (240.0 b)  TX bytes:240 (240.0 b)</span><br></pre></td></tr></table></figure></p>
+<p>修改hostname<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cd /etc/sysconfig/</span><br><span class="line">[root@localhost sysconfig]# vim network</span><br></pre></td></tr></table></figure></p>
+<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NETWORKING=yes</span><br><span class="line">HOSTNAME=mqserver</span><br></pre></td></tr></table></figure></p>
+<p>修改hosts<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost sysconfig]# vim /etc/hosts</span><br></pre></td></tr></table></figure></p>
+<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</span><br><span class="line">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</span><br><span class="line"></span><br><span class="line">192.168.1.131 mqserver</span><br></pre></td></tr></table></figure></p>
+<p>关闭防火墙：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost sysconfig]# chkconfig iptables off</span><br></pre></td></tr></table></figure></p>
+<p>重启一下机器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost sysconfig]# reboot</span><br></pre></td></tr></table></figure></p>
+<p>将下载好的<code>rabbitmq-server-3.6.10-1.el6.noarch.rpm</code>放到指定的目录下<code>/usr/local/software</code></p>
+<p>安装rabbitmq-server<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# rpm -ivh rabbitmq-server-3.6.10-1.el6.noarch.rpm</span><br><span class="line">warning: rabbitmq-server-3.6.10-1.el6.noarch.rpm: Header V4 RSA/SHA512 Signature, key ID 6026dfca: NOKEY</span><br><span class="line">error: Failed dependencies:</span><br><span class="line">	erlang &gt;= R16B-03 is needed by rabbitmq-server-3.6.10-1.el6.noarch</span><br><span class="line">	socat is needed by rabbitmq-server-3.6.10-1.el6.noarch</span><br></pre></td></tr></table></figure></p>
+<p>缺少<code>erlang-18.3-1.el6.x86_64.rpm</code>的依赖，到<a href="http://www.rabbitmq.com/releases/erlang/" target="_blank" rel="external">RabbitMQ的指定目录下去下载</a>将<code>erlang-18.3-1.el6.x86_64.rpm</code>也上传至指定目录，</p>
+<p><code>erlang-18.2-1.el6.x86_64.rpm</code>针对<code>centos6.*</code>版本的，<code>erlang-18.2-1.el7.centos.x86_64.rpm</code>针对的<code>centos7.*</code>版本</p>
+<p>安装erlang<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# rpm -ivh erlang-18.3-1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>注意安装erlang的时候有时候会报缺少包之类的错误，可以先执行下面的命令先下载好整个linux系统的一些依赖：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# yum -y install make gcc gcc-c++ kernel-devel m4 ncurses-devel openssl-devel</span><br></pre></td></tr></table></figure></p>
+<p>验证Erlang是否安装成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# erl</span><br><span class="line">Erlang/OTP 18 [erts-7.3] [source] [64-bit] [async-threads:10] [hipe] [kernel-poll:false]</span><br><span class="line"></span><br><span class="line">Eshell V7.3  (abort with ^G)</span><br><span class="line">1&gt;</span><br></pre></td></tr></table></figure></p>
+<p>再次去安装RabbitMQ服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# rpm -ivh rabbitmq-server-3.6.10-1.el6.noarch.rpm</span><br><span class="line">warning: rabbitmq-server-3.6.10-1.el6.noarch.rpm: Header V4 RSA/SHA512 Signature, key ID 6026dfca: NOKEY</span><br><span class="line">error: Failed dependencies:</span><br><span class="line">	socat is needed by rabbitmq-server-3.6.10-1.el6.noarch</span><br></pre></td></tr></table></figure></p>
+<p>再次提醒我们有一些依赖没有安装，将<code>socat-1.7.3.2-1.el6.lux.x86_64.rpm</code>上传至当前目录<br>安装socat<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# rpm -ivh socat-1.7.3.2-1.el6.lux.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>再去安装rabbitmq<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# rpm -ivh rabbitmq-server-3.6.10-1.el6.noarch.rpm</span><br></pre></td></tr></table></figure></p>
+<p>启动rabbitmq服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# cd /etc/init.d </span><br><span class="line">[root@mqserver init.d]# ./rabbitmq-server restart</span><br><span class="line">Restarting rabbitmq-server: RabbitMQ is not running</span><br><span class="line">SUCCESS</span><br><span class="line">rabbitmq-server.</span><br></pre></td></tr></table></figure></p>
+<p>查看默认端口5672（默认端口）是否启动，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# lsof -i:5672</span><br><span class="line">COMMAND  PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">beam    2793 rabbitmq   49u  IPv6  35431      0t0  TCP *:amqp (LISTEN)</span><br></pre></td></tr></table></figure></p>
+<p><strong>二进制方式安装方式总结</strong>：</p>
+<ol>
+<li>安装erlang</li>
+<li>安装socat</li>
+<li>安装rabbitmq</li>
+</ol>
+<h3 id="使用tar包安装"><a href="#使用tar包安装" class="headerlink" title="使用tar包安装"></a>使用tar包安装</h3><p>本地使用133服务器进行安装</p>
+<p>查看网卡<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# ifconfig</span><br><span class="line">eth1      Link encap:Ethernet  HWaddr 00:50:56:2F:EC:B5  </span><br><span class="line">          inet addr:192.168.1.133  Bcast:192.168.1.255  Mask:255.255.255.0</span><br><span class="line">          inet6 addr: fe80::250:56ff:fe2f:ecb5/64 Scope:Link</span><br><span class="line">          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1</span><br><span class="line">          RX packets:72432 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:38885 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:1000 </span><br><span class="line">          RX bytes:95728391 (91.2 MiB)  TX bytes:2941953 (2.8 MiB)</span><br><span class="line"></span><br><span class="line">lo        Link encap:Local Loopback  </span><br><span class="line">          inet addr:127.0.0.1  Mask:255.0.0.0</span><br><span class="line">          inet6 addr: ::1/128 Scope:Host</span><br><span class="line">          UP LOOPBACK RUNNING  MTU:16436  Metric:1</span><br><span class="line">          RX packets:10 errors:0 dropped:0 overruns:0 frame:0</span><br><span class="line">          TX packets:10 errors:0 dropped:0 overruns:0 carrier:0</span><br><span class="line">          collisions:0 txqueuelen:0 </span><br><span class="line">          RX bytes:744 (744.0 b)  TX bytes:744 (744.0 b)</span><br></pre></td></tr></table></figure></p>
+<p>修改hostname<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cd /etc/sysconfig/</span><br><span class="line">[root@localhost sysconfig]# vim network</span><br></pre></td></tr></table></figure></p>
+<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">NETWORKING=yes</span><br><span class="line">HOSTNAME=mqserver</span><br></pre></td></tr></table></figure></p>
+<p>修改hosts<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost sysconfig]# vim /etc/hosts</span><br></pre></td></tr></table></figure></p>
+<p>配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</span><br><span class="line">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</span><br><span class="line"></span><br><span class="line">192.168.1.133 mqserver</span><br></pre></td></tr></table></figure></p>
+<p>关闭防火墙：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost sysconfig]# chkconfig iptables off</span><br></pre></td></tr></table></figure></p>
+<p>重启一下机器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost sysconfig]# reboot</span><br></pre></td></tr></table></figure></p>
+<p>将<code>rabbitmq-server-generic-unix-3.6.10.tar.xz</code>和<code>erlang-18.3-1.el6.x86_64.rpm</code>文件上传到指定目录下（/usr/local/software）</p>
+<p>安装erlang，跟上面一样先安装一些依赖<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# yum -y install make gcc gcc-c++ kernel-devel m4 ncurses-devel openssl-devel</span><br></pre></td></tr></table></figure></p>
+<p>再去安装erlang<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# rpm -ivh erlang-18.3-1.el6.x86_64.rpm</span><br></pre></td></tr></table></figure></p>
+<p>解压tar包(关于tar的下载地址也在博客最上面的链接上）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# tar -xvf rabbitmq-server-generic-unix-3.6.10.tar.xz</span><br></pre></td></tr></table></figure></p>
+<p>进入解压后的sbin目录下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver software]# cd rabbitmq_server-3.6.10/sbin</span><br><span class="line">[root@mqserver sbin]# ll</span><br><span class="line">total 44</span><br><span class="line">-rwxr-xr-x. 1 1023 1023  1480 May 25 06:55 rabbitmqctl</span><br><span class="line">-rwxr-xr-x. 1 1023 1023  1885 May 25 06:55 rabbitmq-defaults</span><br><span class="line">-rwxr-xr-x. 1 1023 1023 12095 May 25 06:55 rabbitmq-env</span><br><span class="line">-rwxr-xr-x. 1 1023 1023  1362 May 25 06:55 rabbitmq-plugins</span><br><span class="line">-rwxr-xr-x. 1 1023 1023 10971 May 25 06:55 rabbitmq-server</span><br><span class="line">[root@mqserver sbin]# ./rabbitmq-server &amp; </span><br><span class="line">[1] 2127</span><br><span class="line">[root@mqserver sbin]# </span><br><span class="line">              RabbitMQ 3.6.10. Copyright (C) 2007-2017 Pivotal Software, Inc.</span><br><span class="line">  ##  ##      Licensed under the MPL.  See http://www.rabbitmq.com/</span><br><span class="line">  ##  ##</span><br><span class="line">  ##########  Logs: /usr/local/software/rabbitmq_server-3.6.10/var/log/rabbitmq/rabbit@mqserver.log</span><br><span class="line">  ######  ##        /usr/local/software/rabbitmq_server-3.6.10/var/log/rabbitmq/rabbit@mqserver-sasl.log</span><br><span class="line">  ##########</span><br><span class="line">              Starting broker...</span><br><span class="line"> completed with 0 plugins.</span><br></pre></td></tr></table></figure></p>
+<p>检查rabbitmq是否启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# lsof -i:5672</span><br><span class="line">COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">beam    2216 root   48u  IPv6  17882      0t0  TCP *:amqp (LISTEN)</span><br></pre></td></tr></table></figure></p>
+<p>停止服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# ./rabbitmqctl stop</span><br></pre></td></tr></table></figure></p>
+<p>使用./rabbitmq-server -detached 也是后台启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# ./rabbitmq-server -detached</span><br><span class="line">Warning: PID file not written; -detached was passed.</span><br><span class="line">[root@mqserver sbin]# lsof -i:5672</span><br><span class="line">COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">beam    2601 root   48u  IPv6  19438      0t0  TCP *:amqp (LISTEN)</span><br></pre></td></tr></table></figure></p>
+<p>编写二个脚本：<code>start.sh</code>,<code>stop.sh</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# vim start.sh</span><br></pre></td></tr></table></figure></p>
+<p>内容是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./rabbitmq-server -detached</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# vim stop.sh</span><br></pre></td></tr></table></figure>
+<p>内容是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./rabbitmqctl stop</span><br></pre></td></tr></table></figure></p>
+<p>授权，可以使用这二个脚本进行mq的启动和停止<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# chmod 777 start.sh stop.sh</span><br><span class="line">[root@mqserver sbin]# ./stop.sh </span><br><span class="line">Stopping and halting node rabbit@mqserver</span><br><span class="line">[root@mqserver sbin]# lsof -i:5672</span><br><span class="line">[root@mqserver sbin]# ./start.sh </span><br><span class="line">Warning: PID file not written; -detached was passed.</span><br><span class="line">[root@mqserver sbin]# lsof -i:5672</span><br><span class="line">COMMAND  PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME</span><br><span class="line">beam    3017 root   48u  IPv6  20001      0t0  TCP *:amqp (LISTEN)</span><br></pre></td></tr></table></figure></p>
+<h2 id="RabbitMQ命令的基本操作"><a href="#RabbitMQ命令的基本操作" class="headerlink" title="RabbitMQ命令的基本操作"></a>RabbitMQ命令的基本操作</h2><p>查看rabbitmq-server的所在位置，以下三个命令仅在二进制安装方式下有效<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver ~]# type rabbitmq-server</span><br><span class="line">rabbitmq-server is /usr/sbin/rabbitmq-server</span><br></pre></td></tr></table></figure></p>
+<p>管理插件的命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# type rabbitmq-plugins</span><br><span class="line">rabbitmq-plugins is hashed (/usr/sbin/rabbitmq-plugins)</span><br></pre></td></tr></table></figure></p>
+<p>rabbitmqctl指令的位置，rabbitmqctl指令很强大，下面我们会讲到<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver ~]# type rabbitmqctl</span><br><span class="line">rabbitmqctl is /usr/sbin/rabbitmqctl</span><br></pre></td></tr></table></figure></p>
+<h3 id="了解一下强大的命令：rabbitmqctl"><a href="#了解一下强大的命令：rabbitmqctl" class="headerlink" title="了解一下强大的命令：rabbitmqctl"></a>了解一下强大的命令：rabbitmqctl</h3><p>rabbitmqctl status：查看rabbitmq的运行状态。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@iZbp1jcwx7sfb1nwzrehy6Z sbin]# rabbitmqctl status</span><br></pre></td></tr></table></figure></p>
+<p>查看rabbitmqctl所有的命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver ~]# rabbitmqctl</span><br></pre></td></tr></table></figure></p>
+<p>比如下面这些，查看当前mq的队列，exchanges，connections，channels，consumers等等<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">list_queues [-p &lt;vhost&gt;] [--offline|--online|--local] [&lt;queueinfoitem&gt; ...]</span><br><span class="line"> list_exchanges [-p &lt;vhost&gt;] [&lt;exchangeinfoitem&gt; ...]</span><br><span class="line"> list_bindings [-p &lt;vhost&gt;] [&lt;bindinginfoitem&gt; ...]</span><br><span class="line"> list_connections [&lt;connectioninfoitem&gt; ...]</span><br><span class="line"> list_channels [&lt;channelinfoitem&gt; ...]</span><br><span class="line"> list_consumers [-p &lt;vhost&gt;]</span><br><span class="line"> status</span><br></pre></td></tr></table></figure></p>
+<p>查看queues，刚开始安装rabbitmq的时候没有队列：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl list_queues</span><br><span class="line">Listing queues</span><br></pre></td></tr></table></figure></p>
+<p>查看exchanges<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl list_exchanges</span><br><span class="line">Listing exchanges</span><br><span class="line">amq.direct      direct</span><br><span class="line">        direct</span><br><span class="line">amq.match       headers</span><br><span class="line">amq.rabbitmq.log        topic</span><br><span class="line">amq.topic       topic</span><br><span class="line">amq.headers     headers</span><br><span class="line">amq.rabbitmq.trace      topic</span><br><span class="line">amq.fanout      fanout</span><br></pre></td></tr></table></figure></p>
+<p>查看bingding，刚安装服务的时候也没有binding<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl list_bindings</span><br><span class="line">Listing bindings</span><br></pre></td></tr></table></figure></p>
+<p>查看一些用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl list_users</span><br><span class="line">Listing users</span><br><span class="line">guest   [administrator]</span><br></pre></td></tr></table></figure></p>
+<p>查看vhosts<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl list_vhosts</span><br><span class="line">Listing vhosts</span><br><span class="line">/</span><br></pre></td></tr></table></figure></p>
+<p>添加一个用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl add_user zhihao.miao 123456</span><br><span class="line">Creating user &quot;zhihao.miao&quot;</span><br><span class="line">[root@mqserver init.d]# rabbitmqctl list_users</span><br><span class="line">Listing users</span><br><span class="line">zhihao.miao     []</span><br><span class="line">guest   [administrator]</span><br></pre></td></tr></table></figure></p>
+<p>此时发现zhihao.miao这个用户还没有权限。</p>
+<p>设置权限,设置完成之后发现设置成功：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver init.d]# rabbitmqctl set_user_tags zhihao.miao administrator</span><br><span class="line">Setting tags for user &quot;zhihao.miao&quot; to [administrator]</span><br><span class="line">[root@mqserver init.d]# rabbitmqctl list_users</span><br><span class="line">Listing users</span><br><span class="line">zhihao.miao     [administrator]</span><br><span class="line">guest   [administrator]</span><br></pre></td></tr></table></figure></p>
+<p>删除用户：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@iZbp1jcwx7sfb1nwzrehy6Z sbin]# rabbitmqctl  delete_user zhihao.miao</span><br><span class="line">Deleting user &quot;admin&quot;</span><br><span class="line">[root@iZbp1jcwx7sfb1nwzrehy6Z sbin]# rabbitmqctl list_users</span><br><span class="line">Listing users</span><br><span class="line">guest	[administrator]</span><br></pre></td></tr></table></figure></p>
+<p>停止rabbitmq<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./rabbitmqctl stop</span><br></pre></td></tr></table></figure></p>
+<h2 id="rabbitmq的参数设置"><a href="#rabbitmq的参数设置" class="headerlink" title="rabbitmq的参数设置"></a>rabbitmq的参数设置</h2><p>RabbitMQ配有默认内置设置。 在某些环境（例如开发和质量保证）中，这些可以是完全足够的。 如果运行正常，则可能根本不需要任何配置。 但是在一些情况下，我们需要配置一些参数区分于默认的配置。<br>比如rabbitmq的默认端口是5672，如何去改变它呢？</p>
+<p><strong>三种配置参数的方法</strong></p>
+<ul>
+<li>环境变量 <a href="http://www.rabbitmq.com/configure.html#define-environment-variables" target="_blank" rel="external">Environment Variables</a></li>
+<li>配置文件 <a href="http://www.rabbitmq.com/configure.html#configuration-file" target="_blank" rel="external">Configuration File</a>的方式（最常用的方式）</li>
+<li>运行期更改参数和策略 <a href="http://www.rabbitmq.com/parameters.html" target="_blank" rel="external">Runtime Parameters and Policies </a></li>
+</ul>
+<p>比如我想想rabbitmq默认的使用端口5672改为5673，那么怎么操作，使用配置文件 <a href="http://www.rabbitmq.com/configure.html#configuration-file" target="_blank" rel="external">Configuration File</a>的方式。<br>RabbitMQ核心应用, Erlang 服务and RabbitMQ 插件都会使用<code>rabbitmq.config</code>进行相关参数配置。</p>
+<p>如果是<code>Generic UNIX</code>安装方式在<code>$RABBITMQ_HOME/etc/rabbitmq/</code>的目录下放置<code>rabbitmq.config</code><br>RPM的安装方式那么就在<code>/etc/rabbitmq/</code>目录下放置<code>rabbitmq.config</code><br>我的<code>192.168.1.131</code>服务器上就是使用的RPM的安装方式，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim rabbitmq.config</span><br></pre></td></tr></table></figure></p>
+<p>配置方式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    &#123;rabbit, [&#123;tcp_listeners, [5673]&#125;]&#125;</span><br><span class="line">].</span><br></pre></td></tr></table></figure></p>
+<p>官网提供了一份<a href="https://github.com/rabbitmq/rabbitmq-server/blob/stable/docs/rabbitmq.config.example" target="_blank" rel="external">rabbitmq.config示列</a>，此示例文件包含您可能想要设置的大多数配置项（省略一些非常模糊的配置）以及这些设置的文档的示例。 所有配置项都在示例中注释掉，因此您可以取消注册所需的内容。请注意，不要将其当作一般的推荐配置。</p>
+<p>其他的配置：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/5225109-c358cda029d8ffa2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="其他配置项"></p>
+<h2 id="插件的安装"><a href="#插件的安装" class="headerlink" title="插件的安装"></a>插件的安装</h2><p>查看当前可以安装的插件（使用tar安装的进入相关的解压包下的sbin目录）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[root@mqserver sbin]# cd /usr/sbin/</span><br><span class="line">[root@mqserver sbin]# ./rabbitmq-plugins list</span><br><span class="line"> Configured: E = explicitly enabled; e = implicitly enabled</span><br><span class="line"> | Status:   * = running on rabbit@mqserver</span><br><span class="line"> |/</span><br><span class="line">[  ] amqp_client                       3.6.10</span><br><span class="line">[  ] cowboy                            1.0.4</span><br><span class="line">[  ] cowlib                            1.0.2</span><br><span class="line">[  ] rabbitmq_amqp1_0                  3.6.10</span><br><span class="line">[  ] rabbitmq_auth_backend_ldap        3.6.10</span><br><span class="line">[  ] rabbitmq_auth_mechanism_ssl       3.6.10</span><br><span class="line">[  ] rabbitmq_consistent_hash_exchange 3.6.10</span><br><span class="line">[  ] rabbitmq_event_exchange           3.6.10</span><br><span class="line">[  ] rabbitmq_federation               3.6.10</span><br><span class="line">[  ] rabbitmq_federation_management    3.6.10</span><br><span class="line">[  ] rabbitmq_jms_topic_exchange       3.6.10</span><br><span class="line">[  ] rabbitmq_management               3.6.10</span><br><span class="line">[  ] rabbitmq_management_agent         3.6.10</span><br><span class="line">[  ] rabbitmq_management_visualiser    3.6.10</span><br><span class="line">[  ] rabbitmq_mqtt                     3.6.10</span><br><span class="line">[  ] rabbitmq_recent_history_exchange  3.6.10</span><br><span class="line">[  ] rabbitmq_sharding                 3.6.10</span><br><span class="line">[  ] rabbitmq_shovel                   3.6.10</span><br><span class="line">[  ] rabbitmq_shovel_management        3.6.10</span><br><span class="line">[  ] rabbitmq_stomp                    3.6.10</span><br><span class="line">[  ] rabbitmq_top                      3.6.10</span><br><span class="line">[  ] rabbitmq_tracing                  3.6.10</span><br><span class="line">[  ] rabbitmq_trust_store              3.6.10</span><br><span class="line">[  ] rabbitmq_web_dispatch             3.6.10</span><br><span class="line">[  ] rabbitmq_web_mqtt                 3.6.10</span><br><span class="line">[  ] rabbitmq_web_mqtt_examples        3.6.10</span><br><span class="line">[  ] rabbitmq_web_stomp                3.6.10</span><br><span class="line">[  ] rabbitmq_web_stomp_examples       3.6.10</span><br><span class="line">[  ] sockjs                            0.3.4</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">安装管控页面：</span><br></pre></td></tr></table></figure>
+<p>[root@mqserver sbin]# ./rabbitmq-plugins enable rabbitmq_management<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">卸载插件：</span><br></pre></td></tr></table></figure></p>
+<p>[root@mqserver sbin]# ./rabbitmq-plugins enable rabbitmq_management<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">安装管控台之后，rabbitmq的web管控台默认占用的端口是15672</span><br></pre></td></tr></table></figure></p>
+<p>[root@mqserver sbin]# lsof -i:15672<br>COMMAND  PID     USER   FD   TYPE DEVICE SIZE/OFF NODE NAME<br>beam    3432 rabbitmq   50r  IPv4  25122      0t0  TCP *:15672 (LISTEN)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">默认的用户名密码是guest，guest，但是只能在localhost:15672或者127.0.0.1:15672上登录。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 如何让guest来进行ip登录呢?</span><br><span class="line"></span><br><span class="line">loopback用户，只能用localhost,127.0.0.1地址登录。如果将自己设置的用户加入到loopback_users，那么此时该用户也只能通过localhost,127.0.0.1地址进行登录了。</span><br></pre></td></tr></table></figure></p>
+<p>[root@mqserver sbin]# cd /etc/rabbitmq/<br>[root@mqserver rabbitmq]# vim rabbitmq.config<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rabbitmq.config的内容如下，</span><br></pre></td></tr></table></figure></p>
+<p>[<br>    {rabbit, [{tcp_listeners, [5672]},{loopback_users,[]}]}<br>].<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">重启rabbitmq服务，</span><br></pre></td></tr></table></figure></p>
+<p>[root@mqserver software]# cd /etc/init.d<br>[root@mqserver init.d]# ./rabbitmq-server restart<br>```</p>
+<p>配置之后就可以使用guest用户访问<code>http://192.168.1.131:15672/#</code>就可以了。</p>
+<p><strong>参考资料</strong><br><a href="http://www.rabbitmq.com/documentation.html" target="_blank" rel="external">RabbitMQ DOC</a><br><a href="http://www.rabbitmq.com/configure.html" target="_blank" rel="external">RabbitMQ Configuration</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/四种类型Exchange/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          四种类型Exchange
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/消息队列和RabbitMQ及AMQP协议介绍/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">消息队列和RabbitMQ及AMQP协议介绍</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="RabbitMQ安装及其基本命令" data-title="RabbitMQ安装及其基本命令" data-url="http://baixin.io/2017/12/19/RabbitMQ安装及其基本命令/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

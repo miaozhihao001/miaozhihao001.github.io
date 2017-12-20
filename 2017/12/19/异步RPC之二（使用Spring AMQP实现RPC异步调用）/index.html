@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>异步RPC之二（使用Spring AMQP实现RPC异步调用） | 苗志浩</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="使用Spring AMQP实现RPC异步调用示列服务器端
+应用启动类代码，1234567891011121314import org.springframework.context.annotation.AnnotationConfigApplicationContext;import org.springframework.context.annotation.ComponentScan;imp">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步RPC之二（使用Spring AMQP实现RPC异步调用）">
+<meta property="og:url" content="http://baixin.io/2017/12/19/异步RPC之二（使用Spring AMQP实现RPC异步调用）/index.html">
+<meta property="og:site_name" content="苗志浩">
+<meta property="og:description" content="使用Spring AMQP实现RPC异步调用示列服务器端
+应用启动类代码，1234567891011121314import org.springframework.context.annotation.AnnotationConfigApplicationContext;import org.springframework.context.annotation.ComponentScan;imp">
+<meta property="og:updated_time" content="2017-12-19T12:42:04.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="异步RPC之二（使用Spring AMQP实现RPC异步调用）">
+<meta name="twitter:description" content="使用Spring AMQP实现RPC异步调用示列服务器端
+应用启动类代码，1234567891011121314import org.springframework.context.annotation.AnnotationConfigApplicationContext;import org.springframework.context.annotation.ComponentScan;imp">
+  
+    <link rel="alternative" href="/atom.xml" title="苗志浩" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">苗志浩</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">心嗅蔷薇</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						<li>Links</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+					        
+								<a class="rss" target="_blank" href="#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+					        
+								<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">我是谁，我从哪里来，我到哪里去？我就是我，是颜色不一样的吃货…</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">苗志浩</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1513609717821&amp;di=80144ac36a48db076db2751f09718e66&amp;imgtype=0&amp;src=http%3A%2F%2Fjoymepic.joyme.com%2Fwiki%2Fimages%2Fop%2F2%2F21%2F%25E8%25B7%25AF%25E9%25A3%259E%25E5%25AE%259D3.jpg%3FimageView%2F1%2Fw%2F500%2Fh%2F355%2F201506011834" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">苗志浩</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">心嗅蔷薇</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="http://wiki.baixin.io/">个人Wiki</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/miaozhihao001" title="github">github</a>
+			        
+						<a class="rss" target="_blank" href="#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/" title="zhihu">zhihu</a>
+			        
+						<a class="mail" target="_blank" href="/1026145686@qq.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-异步RPC之二（使用Spring AMQP实现RPC异步调用）" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/19/异步RPC之二（使用Spring AMQP实现RPC异步调用）/" class="article-date">
+  	<time datetime="2017-12-19T12:28:55.000Z" itemprop="datePublished">2017-12-19</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      异步RPC之二（使用Spring AMQP实现RPC异步调用）
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用Spring-AMQP实现RPC异步调用"><a href="#使用Spring-AMQP实现RPC异步调用" class="headerlink" title="使用Spring AMQP实现RPC异步调用"></a>使用Spring AMQP实现RPC异步调用</h2><h3 id="示列"><a href="#示列" class="headerlink" title="示列"></a>示列</h3><p><strong>服务器端</strong></p>
+<p>应用启动类代码，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line">        System.out.println(&quot;===server startup======&quot;);</span><br><span class="line">        TimeUnit.SECONDS.sleep(120);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>配置类：<br>监听了<code>sms</code>队列，这个队列将会是客户端请求消息发送到的队列，配置了适配器，适配器中去调用服务，适配器返回的值就是服务端返回给客户端的RPC调用的结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.AcknowledgeMode;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;</span><br><span class="line">import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();</span><br><span class="line">        container.setConnectionFactory(connectionFactory);</span><br><span class="line">        container.setQueueNames(&quot;sms&quot;);</span><br><span class="line">        container.setAcknowledgeMode(AcknowledgeMode.NONE);</span><br><span class="line">        //使用适配器的方式</span><br><span class="line">        container.setMessageListener(new MessageListenerAdapter(new SendSMSHandler()));</span><br><span class="line">        return container;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>处理器，处理器中调用具体的服务，我们此列子中处理器方法返回的值是boolean类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class SendSMSHandler &#123;</span><br><span class="line"></span><br><span class="line">    public boolean handleMessage(byte[] body)&#123;</span><br><span class="line">        String _body = new String(body);</span><br><span class="line">        System.out.println(_body);</span><br><span class="line">        String[] sms = _body.split(&quot;:&quot;);</span><br><span class="line">        String phone = sms[0];</span><br><span class="line">        String content = sms[1];</span><br><span class="line"></span><br><span class="line">        boolean is = SendSMSTool.sendSMS(phone,content);</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(6);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return is;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>服务接口<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public class SendSMSTool &#123;</span><br><span class="line"></span><br><span class="line">    public static boolean sendSMS(String phone,String content)&#123;</span><br><span class="line">        System.out.println(&quot;发送短信内容：【&quot;+content+&quot;】到手机号：&quot;+phone);</span><br><span class="line">        return phone.length() &gt; 6;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><strong>服务端步骤</strong></p>
+<ol>
+<li>消息处理方法，一定要有返回值，这个返回值就是就是server回复客户端的结果。比如我们<code>SendSMSHandler.handleMessage</code>方法返回的值。</li>
+</ol>
+<p><strong>客户端</strong><br>应用启动类：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.core.Message;</span><br><span class="line">import org.springframework.amqp.core.MessageProperties;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.amqp.rabbit.support.CorrelationData;</span><br><span class="line">import org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line">import org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line">import java.util.UUID;</span><br><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">@ComponentScan</span><br><span class="line">public class Application &#123;</span><br><span class="line">    public static void main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);</span><br><span class="line"></span><br><span class="line">        RabbitTemplate rabbitTemplate = context.getBean(RabbitTemplate.class);</span><br><span class="line"></span><br><span class="line">        //设置超时时间，单位是ms</span><br><span class="line">        rabbitTemplate.setReplyTimeout(10000);</span><br><span class="line"></span><br><span class="line">        String phone = &quot;15634344321&quot;;</span><br><span class="line">        String content =&quot;周年庆，五折优惠&quot;;</span><br><span class="line"></span><br><span class="line">        MessageProperties messageProperties = new MessageProperties();</span><br><span class="line">        Message message = new Message((phone+&quot;:&quot;+content).getBytes(),messageProperties);</span><br><span class="line"></span><br><span class="line">        //rabbitTemplate.send(&quot;&quot;,&quot;sms&quot;,message);</span><br><span class="line"></span><br><span class="line">        Message reply = rabbitTemplate.sendAndReceive(&quot;&quot;,&quot;sms&quot;,message,</span><br><span class="line">                new CorrelationData(UUID.randomUUID().toString()));</span><br><span class="line"></span><br><span class="line">        System.out.println(reply);</span><br><span class="line">        System.out.println(&quot;message,body:&quot;+new String(reply.getBody()));</span><br><span class="line">        System.out.println(&quot;message,properties:&quot;+reply.getMessageProperties());</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(30);</span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>配置类代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.connection.ConnectionFactory;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitAdmin;</span><br><span class="line">import org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line">import org.springframework.context.annotation.Bean;</span><br><span class="line">import org.springframework.context.annotation.Configuration;</span><br><span class="line"></span><br><span class="line">@Configuration</span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @Bean</span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果服务端睡眠6s，则客户端通过<code>sendAndReceive</code>方法接收到的<code>Message</code>对象为空，怎样设置呢？<br>客户端通过设置<code>rabbitTemplate.setReplyTimeout(10000);</code>就可以了。</p>
+<p><strong>客户端步骤</strong></p>
+<ol>
+<li>使用<code>sendAndReceive</code>方法发送消息，该方法返回一个Message对象，该对象就是server返回的结果</li>
+<li><code>sendAndReceive</code>如果超过5s还没有收到结果，则返回null，这个超时时间可以通过<code>rabbitTemplate.setReplyTimeout()</code>来进行设置</li>
+<li>server端返回的结果一定要注意，和<code>MessageConverter</code>有关，默认的<code>org.springframework.amqp.support.converter.SimpleMessageConverter</code>会把基本的数据类型转换成<code>Serializable</code>对象，这样的话，client端接收的也是序列化的java对象，所以，需要合理设置<code>MessageConverter</code>。</li>
+</ol>
+<p>示列代码中服务端返回给客户端的是Boolean类型,</p>
+<p>启动服务端客户端代码：<br>服务器打印控制台打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">15634344321:周年庆，五折优惠</span><br><span class="line">发送短信内容：【周年庆，五折优惠】到手机号：15634344321</span><br></pre></td></tr></table></figure></p>
+<p>客户端控制台打印：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">message,body:���sr�java.lang.Boolean� r�՜���Z�valuexp</span><br><span class="line">message,properties:MessageProperties [headers=&#123;&#125;, timestamp=null, messageId=null, userId=null, receivedUserId=null, appId=null, clusterId=null, type=null, correlationId=null, correlationIdString=null, replyTo=null, contentType=application/x-java-serialized-object, contentEncoding=null, contentLength=0, deliveryMode=null, receivedDeliveryMode=PERSISTENT, expiration=null, priority=0, redelivered=false, receivedExchange=, receivedRoutingKey=amq.rabbitmq.reply-to.g2dkAB5yYWJiaXRAaVpicDFqY3d4N3NmYjFud3pyZWh5NloAAFu0AAAABwI=.kHL9zxtdQmtcxl0mQF8zrg==, receivedDelay=null, deliveryTag=1, messageCount=null, consumerTag=null, consumerQueue=null]</span><br></pre></td></tr></table></figure></p>
+<p>我们发现客户端接收到的数据乱码，将服务端的处理器的返回值改写成String类型的，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">import java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line">public class SendSMSHandler &#123;</span><br><span class="line"></span><br><span class="line">    public String handleMessage(byte[] body)&#123;</span><br><span class="line">        String _body = new String(body);</span><br><span class="line">        System.out.println(_body);</span><br><span class="line">        String[] sms = _body.split(&quot;:&quot;);</span><br><span class="line">        String phone = sms[0];</span><br><span class="line">        String content = sms[1];</span><br><span class="line"></span><br><span class="line">        boolean is = SendSMSTool.sendSMS(phone,content);</span><br><span class="line"></span><br><span class="line">        try &#123;</span><br><span class="line">            TimeUnit.SECONDS.sleep(6);</span><br><span class="line">        &#125; catch (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        return is ? &quot;success&quot;:&quot;false&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>此时发现客户端接收的消息数据没有乱码，原因何在？我们总结一下就是服务器端处理器返回给客户端boolean类型，那么返回的消息数据就乱码，如果返回的是String类型，那么返回的消息数据就不会乱码。</p>
+<p>之前我们学习了<code>org.springframework.amqp.support.converter.MessageConverter</code>接口，当客户端向服务端发送消息的时候会进行消息类型转换，调用了<code>fromMessage</code>方法，而当服务器返回给客户端的时候会将服务端的对象转换成<code>Message</code>对象，很明显调用的是<code>toMessage</code>方法。</p>
+<p>我们知道<code>org.springframework.amqp.support.converter.MessageConverter</code>接口的默认实现是<code>org.springframework.amqp.support.converter.SimpleMessageConverter</code>，而<code>toMessage</code>方法的实现是在其继承的对象<code>AbstractMessageConverter</code>中，</p>
+<p>我们看到其<code>AbstractMessageConverter.toMessage</code>方法的实现逻辑是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public final Message toMessage(Object object, MessageProperties messageProperties)</span><br><span class="line">		throws MessageConversionException &#123;</span><br><span class="line">	if (messageProperties == null) &#123;</span><br><span class="line">		messageProperties = new MessageProperties();</span><br><span class="line">	&#125;</span><br><span class="line">	//将对象转换成Message对象</span><br><span class="line">	Message message = createMessage(object, messageProperties);</span><br><span class="line">	messageProperties = message.getMessageProperties();</span><br><span class="line">	if (this.createMessageIds &amp;&amp; messageProperties.getMessageId() == null) &#123;</span><br><span class="line">		messageProperties.setMessageId(UUID.randomUUID().toString());</span><br><span class="line">	&#125;</span><br><span class="line">	return message;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>其<code>createMessage</code>方法就是将对象转换成<code>Message</code>对象，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * Creates an AMQP Message from the provided Object.</span><br><span class="line"> */</span><br><span class="line">@Override</span><br><span class="line">protected Message createMessage(Object object, MessageProperties messageProperties) throws MessageConversionException &#123;</span><br><span class="line">	byte[] bytes = null;</span><br><span class="line">	if (object instanceof byte[]) &#123;</span><br><span class="line">		bytes = (byte[]) object;</span><br><span class="line">		messageProperties.setContentType(MessageProperties.CONTENT_TYPE_BYTES);</span><br><span class="line">	&#125;</span><br><span class="line">	else if (object instanceof String) &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			bytes = ((String) object).getBytes(this.defaultCharset);</span><br><span class="line">		&#125;</span><br><span class="line">		catch (UnsupportedEncodingException e) &#123;</span><br><span class="line">			throw new MessageConversionException(</span><br><span class="line">					&quot;failed to convert to Message content&quot;, e);</span><br><span class="line">		&#125;</span><br><span class="line">		messageProperties.setContentType(MessageProperties.CONTENT_TYPE_TEXT_PLAIN);</span><br><span class="line">		messageProperties.setContentEncoding(this.defaultCharset);</span><br><span class="line">	&#125;</span><br><span class="line">	//因为boolean类型实现Serializable接口，所以会将其序列化</span><br><span class="line">	else if (object instanceof Serializable) &#123;</span><br><span class="line">		try &#123;</span><br><span class="line">			bytes = SerializationUtils.serialize(object);</span><br><span class="line">		&#125;</span><br><span class="line">		catch (IllegalArgumentException e) &#123;</span><br><span class="line">			throw new MessageConversionException(</span><br><span class="line">					&quot;failed to convert to serialized Message content&quot;, e);</span><br><span class="line">		&#125;</span><br><span class="line">		messageProperties.setContentType(MessageProperties.CONTENT_TYPE_SERIALIZED_OBJECT);</span><br><span class="line">	&#125;</span><br><span class="line">	if (bytes != null) &#123;</span><br><span class="line">		messageProperties.setContentLength(bytes.length);</span><br><span class="line">	&#125;</span><br><span class="line">	return new Message(bytes, messageProperties);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们在程序中将序列化对象直接转换成字符串所以乱码，而返回的是String类型的情形的时候先将字符串转换成相应的字节数组，然后返回<code>new Message(bytes, messageProperties);</code>就不会乱码。</p>
+<p>继续探讨，当我们服务端返回的是一个对象的时候，客户端会返回空<br>返回的对象：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public class SendStatus &#123;</span><br><span class="line"></span><br><span class="line">    private String phone;</span><br><span class="line"></span><br><span class="line">    private String result;</span><br><span class="line"></span><br><span class="line">    public String getPhone() &#123;</span><br><span class="line">        return phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setPhone(String phone) &#123;</span><br><span class="line">        this.phone = phone;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getResult() &#123;</span><br><span class="line">        return result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public void setResult(String result) &#123;</span><br><span class="line">        this.result = result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>将该对象返回：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public class SendSMSHandler &#123;</span><br><span class="line"></span><br><span class="line">    public SendStatus handleMessage(byte[] body)&#123;</span><br><span class="line">        String _body = new String(body);</span><br><span class="line">        System.out.println(_body);</span><br><span class="line">        String[] sms = _body.split(&quot;:&quot;);</span><br><span class="line">        String phone = sms[0];</span><br><span class="line">        String content = sms[1];</span><br><span class="line"></span><br><span class="line">        boolean is = SendSMSTool.sendSMS(phone,content);</span><br><span class="line">        SendStatus sendStatus = new SendStatus();</span><br><span class="line">        sendStatus.setPhone(phone);</span><br><span class="line">        sendStatus.setResult(is ? &quot;SUCCESS&quot;:&quot;FAILURE&quot;);</span><br><span class="line">        return sendStatus;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>服务端控制台：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">15634344321:周年庆，五折优惠</span><br><span class="line">发送短信内容：【周年庆，五折优惠】到手机号：15634344321</span><br></pre></td></tr></table></figure></p>
+<p>客户端：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">message,body:</span><br><span class="line">message,properties:MessageProperties [headers=&#123;&#125;, timestamp=null, messageId=null, userId=null, receivedUserId=null, appId=null, clusterId=null, type=null, correlationId=null, correlationIdString=null, replyTo=null, contentType=application/octet-stream, contentEncoding=null, contentLength=0, deliveryMode=null, receivedDeliveryMode=PERSISTENT, expiration=null, priority=0, redelivered=false, receivedExchange=, receivedRoutingKey=amq.rabbitmq.reply-to.g2dkAB5yYWJiaXRAaVpicDFqY3d4N3NmYjFud3pyZWh5NloAAFxBAAAABwI=.01fOGW/nvS2nz6gKza+cjg==, receivedDelay=null, deliveryTag=1, messageCount=null, consumerTag=null, consumerQueue=null]</span><br></pre></td></tr></table></figure></p>
+<p>原因何在，因为我们定义的<code>SendStatus</code>不走<code>createMessage</code>中的所有if分支，最后返回的是null，怎么解决呢，要么自己去定义一个<code>org.springframework.amqp.support.converter.MessageConverter</code>实现，要么换一个默认的<code>org.springframework.amqp.support.converter.MessageConverter</code>实现。</p>
+<h3 id="改造后的示列"><a href="#改造后的示列" class="headerlink" title="改造后的示列"></a>改造后的示列</h3><p>使用AMQP自带的消息类型转换器<code>Jackson2JsonMessageConverter</code><br><strong>服务端</strong></p>
+<p>应用启动类，</p>
+<pre><code>import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+
+import java.util.concurrent.TimeUnit;
+
+@ComponentScan
+public class Application {
+    public static void main(String[] args) throws Exception{
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
+        System.out.println(&quot;===server startup======&quot;);
+        TimeUnit.SECONDS.sleep(120);
+        context.close();
+    }
+}
+</code></pre><p>配置类，添加自定义的消息转换器</p>
+<pre><code>import org.springframework.amqp.core.AcknowledgeMode;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MQConfig {
+
+    @Bean
+    public ConnectionFactory connectionFactory(){
+        CachingConnectionFactory factory = new CachingConnectionFactory();
+        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);
+        return factory;
+    }
+
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory){
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+        return rabbitAdmin;
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        return rabbitTemplate;
+    }
+
+    @Bean
+    public SimpleMessageListenerContainer messageListenerContainer(ConnectionFactory connectionFactory){
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        container.setQueueNames(&quot;sms&quot;);
+        container.setAcknowledgeMode(AcknowledgeMode.NONE);
+        //使用适配器的方式
+        container.setMessageListener(new MessageListenerAdapter(new SendSMSHandler(),new Jackson2JsonMessageConverter()));
+        return container;
+    }
+}
+</code></pre><p>处理器handler，返回自定义的SendStatus类型</p>
+<pre><code>import java.util.concurrent.TimeUnit;
+
+public class SendSMSHandler {
+
+    public SendStatus handleMessage(byte[] body){
+        String _body = new String(body);
+        System.out.println(_body);
+        String[] sms = _body.split(&quot;:&quot;);
+        String phone = sms[0];
+        String content = sms[1];
+
+        boolean is = SendSMSTool.sendSMS(phone,content);
+        SendStatus sendStatus = new SendStatus();
+        sendStatus.setPhone(phone);
+        sendStatus.setResult(is ? &quot;SUCCESS&quot;:&quot;FAILURE&quot;);
+
+        try {
+            TimeUnit.SECONDS.sleep(6);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return sendStatus;
+    }
+}
+</code></pre><p>接口服务，</p>
+<pre><code>public class SendSMSTool {
+
+    public static boolean sendSMS(String phone,String content){
+        System.out.println(&quot;发送短信内容：【&quot;+content+&quot;】到手机号：&quot;+phone);
+        return phone.length() &gt; 6;
+    }
+}
+</code></pre><p>服务端返回的对象，</p>
+<pre><code>public class SendStatus {
+    private String phone;
+
+    private String result;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+}
+</code></pre><p><strong>客户端</strong><br>应用启动类，</p>
+<pre><code>import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.support.CorrelationData;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+@ComponentScan
+public class Application {
+    public static void main(String[] args) throws Exception{
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(Application.class);
+
+        RabbitTemplate rabbitTemplate = context.getBean(RabbitTemplate.class);
+
+        //设置超时时间，单位是ms
+        rabbitTemplate.setReplyTimeout(10000);
+
+        String phone = &quot;15634344321&quot;;
+        String content =&quot;周年庆，五折优惠&quot;;
+
+        MessageProperties messageProperties = new MessageProperties();
+        Message message = new Message((phone+&quot;:&quot;+content).getBytes(),messageProperties);
+
+        //rabbitTemplate.send(&quot;&quot;,&quot;sms&quot;,message);
+
+        Message reply = rabbitTemplate.sendAndReceive(&quot;&quot;,&quot;sms&quot;,message,
+                new CorrelationData(UUID.randomUUID().toString()));
+
+        System.out.println(reply);
+        System.out.println(&quot;message,body:&quot;+new String(reply.getBody()));
+        System.out.println(&quot;message,properties:&quot;+reply.getMessageProperties());
+
+        TimeUnit.SECONDS.sleep(30);
+        context.close();
+    }
+}
+</code></pre><p>配置类</p>
+<pre><code>import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MQConfig {
+
+    @Bean
+    public ConnectionFactory connectionFactory(){
+        CachingConnectionFactory factory = new CachingConnectionFactory();
+        factory.setUri(&quot;amqp://zhihao.miao:123456@192.168.1.131:5672&quot;);
+        return factory;
+    }
+
+    @Bean
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory){
+        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
+        return rabbitAdmin;
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory){
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
+        return rabbitTemplate;
+    }
+}
+</code></pre><p>启动服务器客户端，客户端返回</p>
+<pre><code>message,body:{&quot;phone&quot;:&quot;15634344321&quot;,&quot;result&quot;:&quot;SUCCESS&quot;}
+message,properties:MessageProperties [headers={__TypeId__=rpc.server.SendStatus}, timestamp=null, messageId=null, userId=null, receivedUserId=null, appId=null, clusterId=null, type=null, correlationId=null, correlationIdString=null, replyTo=null, contentType=application/json, contentEncoding=UTF-8, contentLength=0, deliveryMode=null, receivedDeliveryMode=PERSISTENT, expiration=null, priority=0, redelivered=false, receivedExchange=, receivedRoutingKey=amq.rabbitmq.reply-to
+</code></pre><p>返回了SendStatus的JSON格式，因为使用了<code>Jackson2JsonMessageConverter</code>消息类型转换器。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/12/19/RabbitMQ异常处理/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          RabbitMQ异常处理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/12/19/异步RPC之一（java client实现RPC功能）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">异步RPC之一（java client实现RPC功能）</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+<div class="share_addthis">
+  <div class="sharing addthis_toolbox share">
+    <a class="addthis_button_facebook_like"></a>
+    <a class="addthis_button_tweet"></a>
+    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-560c64c35486b3d4" async="async"></script>
+</div>
+
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="异步RPC之二（使用Spring AMQP实现RPC异步调用）" data-title="异步RPC之二（使用Spring AMQP实现RPC异步调用）" data-url="http://baixin.io/2017/12/19/异步RPC之二（使用Spring AMQP实现RPC异步调用）/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 苗志浩
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
