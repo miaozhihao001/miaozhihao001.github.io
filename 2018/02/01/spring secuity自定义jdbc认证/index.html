@@ -11,7 +11,8 @@
   <meta name="description" content="上一章节我们讲了spring secuity默认支持的jdbc认证，本章节我们讲解自定义表结构的jdbc认证
 
 我们到JdbcDaoImpl查看二个方法，
-第一个方法loadUsersByUsername方法，这个方法故名思义就是通过用户名加载登录用户User对象，">
+第一个方法loadUsersByUsername方法，这个方法故名思义就是通过用户名加载登录用户User对象，
+1234567891011121314151617181920/** * Executes the SQL &amp;lt;tt&amp;gt;u">
 <meta property="og:type" content="article">
 <meta property="og:title" content="spring secuity自定义jdbc认证">
 <meta property="og:url" content="//litten.me/2018/02/01/spring secuity自定义jdbc认证/index.html">
@@ -19,14 +20,16 @@
 <meta property="og:description" content="上一章节我们讲了spring secuity默认支持的jdbc认证，本章节我们讲解自定义表结构的jdbc认证
 
 我们到JdbcDaoImpl查看二个方法，
-第一个方法loadUsersByUsername方法，这个方法故名思义就是通过用户名加载登录用户User对象，">
-<meta property="og:updated_time" content="2018-02-02T07:16:41.000Z">
+第一个方法loadUsersByUsername方法，这个方法故名思义就是通过用户名加载登录用户User对象，
+1234567891011121314151617181920/** * Executes the SQL &amp;lt;tt&amp;gt;u">
+<meta property="og:updated_time" content="2018-02-06T09:34:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="spring secuity自定义jdbc认证">
 <meta name="twitter:description" content="上一章节我们讲了spring secuity默认支持的jdbc认证，本章节我们讲解自定义表结构的jdbc认证
 
 我们到JdbcDaoImpl查看二个方法，
-第一个方法loadUsersByUsername方法，这个方法故名思义就是通过用户名加载登录用户User对象，">
+第一个方法loadUsersByUsername方法，这个方法故名思义就是通过用户名加载登录用户User对象，
+1234567891011121314151617181920/** * Executes the SQL &amp;lt;tt&amp;gt;u">
   
     <link rel="alternative" href="/atom.xml" title="zhihao.miao" type="application/atom+xml">
   
@@ -191,10 +194,10 @@
 </blockquote>
 <p>我们到<code>JdbcDaoImpl</code>查看二个方法，</p>
 <p>第一个方法<code>loadUsersByUsername</code>方法，这个方法故名思义就是通过用户名加载登录用户<code>User</code>对象，</p>
-<a id="more"></a>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Executes the SQL &lt;tt&gt;usersByUsernameQuery&lt;/tt&gt; and returns a list of UserDetails</span><br><span class="line"> * objects. There should normally only be one matching user.</span><br><span class="line"> */</span></span><br><span class="line"><span class="keyword">protected</span> List&lt;UserDetails&gt; loadUsersByUsername(<span class="keyword">String</span> username) &#123;</span><br><span class="line">	<span class="keyword">return</span> getJdbcTemplate().query(<span class="keyword">this</span>.usersByUsernameQuery,</span><br><span class="line">			<span class="keyword">new</span> <span class="keyword">String</span>[] &#123; username &#125;, <span class="keyword">new</span> RowMapper&lt;UserDetails&gt;() &#123;</span><br><span class="line">				@Override</span><br><span class="line">				<span class="keyword">public</span> UserDetails mapRow(ResultSet rs, <span class="built_in">int</span> rowNum)</span><br><span class="line">						<span class="keyword">throws</span> SQLException &#123;</span><br><span class="line">					<span class="comment">//第一列查询用户名，第二列查询密码，第三列查询用户账号的状态</span></span><br><span class="line">					<span class="keyword">String</span> username = rs.getString(<span class="number">1</span>);</span><br><span class="line">					<span class="keyword">String</span> password = rs.getString(<span class="number">2</span>);</span><br><span class="line">					<span class="built_in">boolean</span> enabled = rs.getBoolean(<span class="number">3</span>);</span><br><span class="line">					<span class="keyword">return</span> <span class="keyword">new</span> User(username, password, enabled, <span class="keyword">true</span>, <span class="keyword">true</span>, <span class="keyword">true</span>,</span><br><span class="line">							AuthorityUtils.NO_AUTHORITIES);</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>usersByUsernameQuery</code>的默认sql是，</p>
 <figure class="highlight processing"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">String</span> DEF_USERS_BY_USERNAME_QUERY = <span class="string">"select username,password,enabled "</span></span><br><span class="line">      + <span class="string">"from users "</span> + <span class="string">"where username = ?"</span>;</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>第二个方法就是<code>loadUserAuthorities</code>，通过方法我们也知道这个方法是通过用户查询该用户的相关权限，</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * Loads authorities by executing the SQL from &lt;tt&gt;authoritiesByUsernameQuery&lt;/tt&gt;.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@return</span> a list of GrantedAuthority objects for the user</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> List&lt;GrantedAuthority&gt; <span class="title">loadUserAuthorities</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> getJdbcTemplate().query(<span class="keyword">this</span>.authoritiesByUsernameQuery,</span><br><span class="line">         <span class="keyword">new</span> String[] &#123; username &#125;, <span class="keyword">new</span> RowMapper&lt;GrantedAuthority&gt;() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> GrantedAuthority <span class="title">mapRow</span><span class="params">(ResultSet rs, <span class="keyword">int</span> rowNum)</span></span><br><span class="line">                  <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">               String roleName = JdbcDaoImpl.<span class="keyword">this</span>.rolePrefix + rs.getString(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">               <span class="keyword">return</span> <span class="keyword">new</span> SimpleGrantedAuthority(roleName);</span><br><span class="line">            &#125;</span><br><span class="line">         &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​    </p>

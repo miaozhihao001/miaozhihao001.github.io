@@ -10,22 +10,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="我们查看源码
 从默认的退出api入口，
-1http.logout();">
+1http.logout();
+进入logout方法，
+123public LogoutConfigurer&amp;lt;HttpSecurity&amp;gt; logout() throws Exception &amp;#123;	return getOrApply(new LogoutConfigurer&amp;lt;HttpSecurity&amp;gt;());&amp;#125;
+我们查">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用spring secuity自定义退出">
 <meta property="og:url" content="//litten.me/2018/01/30/使用spring secuity自定义退出/index.html">
 <meta property="og:site_name" content="zhihao.miao">
 <meta property="og:description" content="我们查看源码
 从默认的退出api入口，
-1http.logout();">
+1http.logout();
+进入logout方法，
+123public LogoutConfigurer&amp;lt;HttpSecurity&amp;gt; logout() throws Exception &amp;#123;	return getOrApply(new LogoutConfigurer&amp;lt;HttpSecurity&amp;gt;());&amp;#125;
+我们查">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-e217c19e333c6a90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/900">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-e217c19e333c6a90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/900">
-<meta property="og:updated_time" content="2018-02-06T09:18:49.000Z">
+<meta property="og:updated_time" content="2018-02-06T09:33:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用spring secuity自定义退出">
 <meta name="twitter:description" content="我们查看源码
 从默认的退出api入口，
-1http.logout();">
+1http.logout();
+进入logout方法，
+123public LogoutConfigurer&amp;lt;HttpSecurity&amp;gt; logout() throws Exception &amp;#123;	return getOrApply(new LogoutConfigurer&amp;lt;HttpSecurity&amp;gt;());&amp;#125;
+我们查">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-e217c19e333c6a90.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/900">
   
     <link rel="alternative" href="/atom.xml" title="zhihao.miao" type="application/atom+xml">
@@ -189,11 +198,11 @@
         <p>我们查看源码</p>
 <p>从默认的退出api入口，</p>
 <figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http<span class="selector-class">.logout</span>();</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
 <p>进入logout方法，</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> LogoutConfigurer&lt;HttpSecurity&gt; <span class="title">logout</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> getOrApply(<span class="keyword">new</span> LogoutConfigurer&lt;HttpSecurity&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>我们查看LogoutConfigurer类，默认的退出的url地址是/logout，默认的退出成功跳转的url地址是/login?logout</p>
 <figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">LogoutConfigurer&lt;H</span> <span class="keyword">extends</span> <span class="title">HttpSecurityBuilder&lt;H&gt;&gt;</span> <span class="keyword">extends</span></span></span><br><span class="line">		<span class="type">AbstractHttpConfigurer</span>&lt;<span class="type">LogoutConfigurer</span>&lt;<span class="type">H</span>&gt;, <span class="type">H</span>&gt; &#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">List</span>&lt;<span class="type">LogoutHandler</span>&gt; logoutHandlers = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;<span class="type">LogoutHandler</span>&gt;();</span><br><span class="line">	<span class="keyword">private</span> <span class="type">SecurityContextLogoutHandler</span> contextLogoutHandler = <span class="keyword">new</span> <span class="type">SecurityContextLogoutHandler</span>();</span><br><span class="line">    <span class="comment">//默认的退出成功跳转的url地址是/login?logout</span></span><br><span class="line">	<span class="keyword">private</span> <span class="type">String</span> logoutSuccessUrl = <span class="string">"/login?logout"</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">LogoutSuccessHandler</span> logoutSuccessHandler;</span><br><span class="line">    <span class="comment">//默认的退出的url地址是/logout</span></span><br><span class="line">	<span class="keyword">private</span> <span class="type">String</span> logoutUrl = <span class="string">"/logout"</span>;</span><br><span class="line">	<span class="keyword">private</span> <span class="type">RequestMatcher</span> logoutRequestMatcher;</span><br><span class="line">	<span class="keyword">private</span> boolean permitAll;</span><br><span class="line">	<span class="keyword">private</span> boolean customLogoutSuccess;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="type">LinkedHashMap</span>&lt;<span class="type">RequestMatcher</span>, <span class="type">LogoutSuccessHandler</span>&gt; defaultLogoutSuccessHandlerMappings =</span><br><span class="line">			<span class="keyword">new</span> <span class="type">LinkedHashMap</span>&lt;<span class="type">RequestMatcher</span>, <span class="type">LogoutSuccessHandler</span>&gt;();</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span><br><span class="line">	 * Creates a new instance</span><br><span class="line">	 * @see HttpSecurity#logout()</span><br><span class="line">	 */</span></span><br><span class="line">	public <span class="type">LogoutConfigurer</span>() &#123;</span><br><span class="line">	&#125;</span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
 <p>再往下看，LogoutConfigurer类的getLogoutRequestMatcher方法，</p>
 <figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">@SuppressWarnings(<span class="string">"unchecked"</span>)</span><br><span class="line">private RequestMatcher getLogoutRequestMatcher(H http) &#123;</span><br><span class="line">	if (logoutRequestMatcher != null) &#123;</span><br><span class="line">		return logoutRequestMatcher;</span><br><span class="line">	&#125;</span><br><span class="line">	if (http.getConfigurer(CsrfConfigurer.class) != null) &#123;</span><br><span class="line">		this.logoutRequestMatcher = new AntPathRequestMatcher(this.logoutUrl, <span class="string">"<span class="keyword">POST</span>"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	else &#123;</span><br><span class="line">		this.logoutRequestMatcher = new OrRequestMatcher(</span><br><span class="line">			new AntPathRequestMatcher(this.logoutUrl, <span class="string">"<span class="keyword">GET</span>"</span>),</span><br><span class="line">			new AntPathRequestMatcher(this.logoutUrl, <span class="string">"<span class="keyword">POST</span>"</span>),</span><br><span class="line">			new AntPathRequestMatcher(this.logoutUrl, <span class="string">"<span class="keyword">PUT</span>"</span>),</span><br><span class="line">			new AntPathRequestMatcher(this.logoutUrl, <span class="string">"<span class="keyword">DELETE</span>"</span>)</span><br><span class="line">		);</span><br><span class="line">	&#125;</span><br><span class="line">	return this.logoutRequestMatcher;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果是启用了csrf模式，退出是使用的post类型，如果没有启动csrf那么启动的是else中的逻辑。</p>
