@@ -8,19 +8,19 @@
   <link rel="dns-prefetch" href="//litten.me">
   <title>priority queue | zhihao.miao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="优先级队列(priority queue)">
+  <meta name="description">
 <meta property="og:type" content="article">
 <meta property="og:title" content="priority queue">
 <meta property="og:url" content="//litten.me/2017/12/19/priority queue/index.html">
 <meta property="og:site_name" content="zhihao.miao">
-<meta property="og:description" content="优先级队列(priority queue)">
+<meta property="og:description">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-8e7a95d880676f49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-2d3c56017c17f2d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-fae5a49d133a8c28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2017-12-22T02:19:34.000Z">
+<meta property="og:updated_time" content="2018-01-11T02:58:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="priority queue">
-<meta name="twitter:description" content="优先级队列(priority queue)">
+<meta name="twitter:description">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-8e7a95d880676f49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
   
     <link rel="alternative" href="/atom.xml" title="zhihao.miao" type="application/atom+xml">
@@ -50,7 +50,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="null" class="js-avatar">
+			<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1514286165584&amp;di=c9eb1936f5718fa0388e3b993b0ca3ac&amp;imgtype=0&amp;src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3Ded9bba9964224f4a5799731b39f69044%2F70e7bc83b9014a90a9638a02a0773912b21bee26.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">zhihao.miao</a></h1>
@@ -110,7 +110,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="null" class="js-avatar">
+				<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1514286165584&amp;di=c9eb1936f5718fa0388e3b993b0ca3ac&amp;imgtype=0&amp;src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3Ded9bba9964224f4a5799731b39f69044%2F70e7bc83b9014a90a9638a02a0773912b21bee26.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">zhihao.miao</h1>
@@ -181,7 +181,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="优先级队列-priority-queue"><a href="#优先级队列-priority-queue" class="headerlink" title="优先级队列(priority queue)"></a>优先级队列(priority queue)</h2><p><img src="http://upload-images.jianshu.io/upload_images/5225109-8e7a95d880676f49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="创建具有优先级属性的队列"></p>
+        <p><img src="http://upload-images.jianshu.io/upload_images/5225109-8e7a95d880676f49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="创建具有优先级属性的队列"></p>
 <a id="more"></a>
 <h3 id="示列"><a href="#示列" class="headerlink" title="示列"></a>示列</h3><p>生产端：<br><figure class="highlight d"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.Message;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.core.MessageProperties;</span><br><span class="line"><span class="keyword">import</span> org.springframework.amqp.rabbit.core.RabbitTemplate;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.AnnotationConfigApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.ComponentScan;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Random;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@ComponentScan</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> Application &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> MessageProperties getmessageProperties()&#123;</span><br><span class="line">        <span class="keyword">int</span> priority = <span class="keyword">new</span> Random().nextInt(<span class="number">5</span>);</span><br><span class="line">        System.<span class="keyword">out</span>.println(<span class="string">"====优先级==="</span>+priority);</span><br><span class="line">        MessageProperties messageProperties = <span class="keyword">new</span> MessageProperties();</span><br><span class="line">        messageProperties.setContentType(<span class="string">"text"</span>);</span><br><span class="line">        messageProperties.setPriority(priority);</span><br><span class="line">        <span class="keyword">return</span> messageProperties;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws Exception&#123;</span><br><span class="line">        AnnotationConfigApplicationContext context = <span class="keyword">new</span> AnnotationConfigApplicationContext(Application.<span class="keyword">class</span>);</span><br><span class="line">        RabbitTemplate rabbitTemplate = context.getBean(RabbitTemplate.<span class="keyword">class</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">byte</span>[] <span class="keyword">body</span> = <span class="string">"hello world"</span>.getBytes();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//一次性发送10条消息，优先级分别是1到10</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            rabbitTemplate.send(<span class="string">""</span>,<span class="string">"zhihao.miao.user"</span>,<span class="keyword">new</span> Message(<span class="keyword">body</span>,getmessageProperties()));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">        context.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>配置：<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">import org<span class="selector-class">.springframework</span><span class="selector-class">.amqp</span><span class="selector-class">.rabbit</span><span class="selector-class">.connection</span><span class="selector-class">.CachingConnectionFactory</span>;</span><br><span class="line">import org<span class="selector-class">.springframework</span><span class="selector-class">.amqp</span><span class="selector-class">.rabbit</span><span class="selector-class">.connection</span><span class="selector-class">.ConnectionFactory</span>;</span><br><span class="line">import org<span class="selector-class">.springframework</span><span class="selector-class">.amqp</span><span class="selector-class">.rabbit</span><span class="selector-class">.core</span><span class="selector-class">.RabbitAdmin</span>;</span><br><span class="line">import org<span class="selector-class">.springframework</span><span class="selector-class">.amqp</span><span class="selector-class">.rabbit</span><span class="selector-class">.core</span><span class="selector-class">.RabbitTemplate</span>;</span><br><span class="line">import org<span class="selector-class">.springframework</span><span class="selector-class">.context</span><span class="selector-class">.annotation</span><span class="selector-class">.Bean</span>;</span><br><span class="line">import org<span class="selector-class">.springframework</span><span class="selector-class">.context</span><span class="selector-class">.annotation</span><span class="selector-class">.Configuration</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">@Configuration</span></span><br><span class="line">public class MQConfig &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@Bean</span></span><br><span class="line">    public ConnectionFactory connectionFactory()&#123;</span><br><span class="line">        CachingConnectionFactory factory = new CachingConnectionFactory();</span><br><span class="line">        factory<span class="selector-class">.setUri</span>(<span class="string">"amqp://zhihao.miao:123456@192.168.1.131:5672"</span>);</span><br><span class="line">        return factory;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@Bean</span></span><br><span class="line">    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);</span><br><span class="line">        return rabbitAdmin;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@Bean</span></span><br><span class="line">    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory)&#123;</span><br><span class="line">        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);</span><br><span class="line">        return rabbitTemplate;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -366,7 +366,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 zhihao.miao
+    		&copy; 2018 zhihao.miao
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -453,10 +453,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">原创</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
             
@@ -517,11 +513,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             </li>
           
             <li class="search-li">
+              <a href="/categories/maven/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>maven</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="/categories/git/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>git</a>
+            </li>
+          
+            <li class="search-li">
               <a href="https://www.jianshu.com/u/90ab66c248e6" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>占小狼</a>
             </li>
           
             <li class="search-li">
               <a href="http://elasticjob.io/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>elasticjob</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.iocoder.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>芋道源码</a>
             </li>
           
         </ul>

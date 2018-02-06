@@ -45,7 +45,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="null" class="js-avatar">
+			<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1514286165584&amp;di=c9eb1936f5718fa0388e3b993b0ca3ac&amp;imgtype=0&amp;src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3Ded9bba9964224f4a5799731b39f69044%2F70e7bc83b9014a90a9638a02a0773912b21bee26.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">zhihao.miao</a></h1>
@@ -105,7 +105,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="null" class="js-avatar">
+				<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1514286165584&amp;di=c9eb1936f5718fa0388e3b993b0ca3ac&amp;imgtype=0&amp;src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3Ded9bba9964224f4a5799731b39f69044%2F70e7bc83b9014a90a9638a02a0773912b21bee26.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">zhihao.miao</h1>
@@ -158,30 +158,33 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-MessageConverter详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Nexus私服工作中的具体使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/MessageConverter详解/">MessageConverter详解</a>
+      <a class="article-title" href="/2017/12/31/Nexus私服工作中的具体使用/">Nexus私服工作中的具体使用</a>
     </h1>
   
 
         
-        <a href="/2017/12/19/MessageConverter详解/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:19:12.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
+        <a href="/2017/12/31/Nexus私服工作中的具体使用/" class="archive-article-date">
+  	<time datetime="2017-12-31T13:12:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-31</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="MessageConverter详解"><a href="#MessageConverter详解" class="headerlink" title="MessageConverter详解"></a>MessageConverter详解</h2><p>org.springframework.amqp.support.converter.MessageConverter</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/5225109-90014c4ee566619c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="MessageConverter"></p>
+        <h3 id="Nexus权限管理机制及创建部署专用账号"><a href="#Nexus权限管理机制及创建部署专用账号" class="headerlink" title="Nexus权限管理机制及创建部署专用账号"></a>Nexus权限管理机制及创建部署专用账号</h3><p>我们声明依赖，我们要开发一个功能，需要用到一些依赖，基于Nexus私服的机制给我们拉取所有的依赖到本地仓库供我们使用，同时私服上也会缓存一份。接下来我们要干嘛？</p>
+<p>接下来实际上来说，我们就要使用各种依赖开始写代码，实现各种功能，写单元测试，本地工程跑一跑走一下冒烟测试。比如类似于我们这种大型的项目，每个模块/每个服务，都是一个单独的工程，我们有一个5个人的团队，除了leader不写代码之外，其他4个人每个人都负责一个工程。</p>
+<p>所以我们每个人把自己的代码写好之后，要跟其他就要联调，测试。我们需要将我们的代码部署到私服仓库里面去，让团队中其他人可以从私服里拉取和下载我们写好的代码对应的那个jar包，然后就可以在自己本地调用我们的jar包里面的各种方法和类，按照约定来写代码和测试。</p>
+<p>所以我们现在要学习的就是说，假设我们写好了代码，需要将我们写好的代码打成一个jar包，供其他人去引用和依赖，然后基于我们的代码去开发，此时就涉及到一个问题，如何将我们写好的代码，清理/编译/测试/打包/部署到私服。</p>
+<p>我们需要学习如何将自己的工程打包后发布到私服。</p>
         
-          <a class="article-more-a" href="/2017/12/19/MessageConverter详解/#more">more >></a>
+          <a class="article-more-a" href="/2017/12/31/Nexus私服工作中的具体使用/#more">more >></a>
         
       
 
@@ -196,7 +199,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
+        			<a href="/categories/maven//" class="article-tag-list-link color1">maven</a>
         		</li>
       		
 		</ul>
@@ -205,7 +208,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/MessageConverter详解/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/31/Nexus私服工作中的具体使用/">展开全文 >></a>
         </p>
       
 
@@ -235,187 +238,111 @@
 
 
   
-    <article id="post-MessageListenerAdapter详解" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-搭建配置公司的nexus私服仓库" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/MessageListenerAdapter详解/">MessageListenerAdapter详解</a>
+      <a class="article-title" href="/2017/12/28/搭建配置公司的nexus私服仓库/">搭建配置公司的nexus私服仓库</a>
     </h1>
   
 
         
-        <a href="/2017/12/19/MessageListenerAdapter详解/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:18:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
+        <a href="/2017/12/28/搭建配置公司的nexus私服仓库/" class="archive-article-date">
+  	<time datetime="2017-12-28T02:23:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-28</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="MessageListenerAdapter详解"><a href="#MessageListenerAdapter详解" class="headerlink" title="MessageListenerAdapter详解"></a>MessageListenerAdapter详解</h2><blockquote>
-<p>Message listener adapter that delegates the handling of messages to target listener methods via reflection, with flexible message type conversion. Allows listener methods to operate on message content types, completely independent from the Rabbit API.<br>消息监听适配器（adapter），通过反射将消息处理委托给目标监听器的处理方法，并进行灵活的消息类型转换。允许监听器方法对消息内容类型进行操作，完全独立于Rabbit API。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2017/12/19/MessageListenerAdapter详解/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/MessageListenerAdapter详解/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-SimpleMessageListenerContainer更多用法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/SimpleMessageListenerContainer更多用法/">SimpleMessageListenerContainer更多用法</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/19/SimpleMessageListenerContainer更多用法/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:16:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>书接上回，我们使用SimpleMessageListenerContainer容器设置消费队列监听，然后设置具体的监听Listener进行消息消费具体逻辑的编写。</p>
-<h2 id="SimpleMessageListenerContainer详解"><a href="#SimpleMessageListenerContainer详解" class="headerlink" title="SimpleMessageListenerContainer详解"></a>SimpleMessageListenerContainer详解</h2><p>同一个queue上有多个消费者的时候，只会有一个消费者收到消息，一般是多个消费者轮流收到消息。</p>
-        
-          <a class="article-more-a" href="/2017/12/19/SimpleMessageListenerContainer更多用法/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/SimpleMessageListenerContainer更多用法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Spring AMQP API（生产和消费消息）" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/Spring AMQP API（生产和消费消息）/">Spring AMQP API（生产和消费消息）</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/19/Spring AMQP API（生产和消费消息）/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:15:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><code>RabbitTemplate</code>类是简化RabbitMQ访问的工具类（发送和接收消息）</p>
+        <h3 id="私服介绍"><a href="#私服介绍" class="headerlink" title="私服介绍"></a>私服介绍</h3><p>以下部分摘抄自maven实战</p>
 <blockquote>
-<p>总结：<br>1.使用RabbitTemplate进行消息的发送。<br>2.使用SimpleMessageListenerContainer类监听队列，进行消息的消费。</p>
+<p>私服不是maven的核心概念，它仅仅是一种衍生出来的特殊的maven仓库，通过建立自己的私服，就可以降低中央仓库负荷，节省外网带宽，加速maven构建，自己部署构建等，从而高效的构建maven。<br>有三种专门的maven仓库管理软件可以用来帮助大家建立私服：Apache基金会的Archiva，JFrog的Artifactory和Sonatype的Nexus。其中，Archiva是开源的，而Artifactory和Nexus的核心也是开源的，因此读者可以自由选择使用。笔者作为Nexus开发团队的成员，自然十分推崇Nexus。事实上，Nexus也是当前最流行的Maven仓库管理软件。</p>
+</blockquote>
+<h3 id="Nexus简介安装"><a href="#Nexus简介安装" class="headerlink" title="Nexus简介安装"></a>Nexus简介安装</h3><p>2005年12月，Tamas Cservenak由于受不了匈牙利电信ADSL的低速度，开始着手开发Proximity——一个很简单的Web应用。它可以代理并缓存Maven构件，当Maven需要下载构件的时候，就不需要反复依赖于ADSL。到2007年，Sonatype邀请Tamas参与创建一个更酷的Maven仓库管理软件，这就是后来的Nexus。<br>Nexus团队的成员来自世界各地，它也从社区收到了大量反馈和帮助，现在最新版本的是3.6.2。</p>
+        
+          <a class="article-more-a" href="/2017/12/28/搭建配置公司的nexus私服仓库/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/maven//" class="article-tag-list-link color1">maven</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/28/搭建配置公司的nexus私服仓库/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-maven多层次仓库" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/27/maven多层次仓库/">maven多层次仓库</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/27/maven多层次仓库/" class="archive-article-date">
+  	<time datetime="2017-12-27T11:23:48.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>maven会用仓库来存储所有的依赖，不会说是每个项目都放一份依赖这样子。<br>如果我们不使用maven，那么我们就会在各种工程里建一个lib目录，里面放入这个工程的所有依赖，在打包的时候通常会用eclipse的fatjar这个插件，将工程打成一个jar，里面包含了所有依赖。<br>但是如果公司内有几十个，甚至上百个工程，那么每个工程都要维护一份依赖，第一非常浪费空间，第二非常麻烦，每次升级某个依赖，可能要将几十个工程里的lib包下的依赖，先删除旧版本，再放入新版本，很麻烦。而maven的仓库，就是用来统一存放各种依赖的地方。哪怕是有几十个工程，但是每个工程如果有相同的依赖，那么那个依赖在仓库里只会存在一次，不会放在各个工程自己的lib包下。消除了重复，如果要升级某个依赖，直接在各个工程的pom.xml里升级依赖的版本即可，大家都会自动引用最新版本的依赖了。在仓库里所有依赖就放一次，然后每个工程在pom.xml里面声明对依赖的引用即可，<br>打包的时候，可以将所有依赖打入发布包即可。</p>
 </blockquote>
         
-          <a class="article-more-a" href="/2017/12/19/Spring AMQP API（生产和消费消息）/#more">more >></a>
+          <a class="article-more-a" href="/2017/12/27/maven多层次仓库/#more">more >></a>
         
       
 
@@ -430,7 +357,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
+        			<a href="/categories/maven//" class="article-tag-list-link color1">maven</a>
         		</li>
       		
 		</ul>
@@ -439,7 +366,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/Spring AMQP API（生产和消费消息）/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/27/maven多层次仓库/">展开全文 >></a>
         </p>
       
 
@@ -469,33 +396,437 @@
 
 
   
-    <article id="post-Spring AMQP简介与quick start" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-maven快速入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/Spring AMQP简介与quick start/">Spring AMQP简介与quick start</a>
+      <a class="article-title" href="/2017/12/26/maven快速入门/">maven快速入门</a>
     </h1>
   
 
         
-        <a href="/2017/12/19/Spring AMQP简介与quick start/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:14:20.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
+        <a href="/2017/12/26/maven快速入门/" class="archive-article-date">
+  	<time datetime="2017-12-26T12:05:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-26</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Spring-AMQP"><a href="#Spring-AMQP" class="headerlink" title="Spring AMQP"></a>Spring AMQP</h2><p>先对本片博客进行总结，可直接跳过总结看下面的博客正文。</p>
-<blockquote>
-<p>总结：<br>spring-amqp二个核心类RabbitAdmin和RabbitTemplate类<br>1.RabbitAdmin类完成对Exchange，Queue，Binging的操作，在容器中管理了RabbitAdmin类的时候，可以对Exchange，Queue，Binging进行自动声明。<br>2.RabbitTemplate类是发送和接收消息的工具类。(下一篇博客具体讲解）</p>
+        <h3 id="使用maven构建项目"><a href="#使用maven构建项目" class="headerlink" title="使用maven构建项目"></a>使用maven构建项目</h3><p>为了加快速度，在<code>settings.xml</code>中加一段配置，用国内阿里云的镜像仓库去下载各种东西</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">id</span>&gt;</span>nexus-aliyun<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">name</span>&gt;</span>Nexus aliyun<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.aliyun.com/nexus/content/groups/public<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">mirror</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用archetype构建项目，进入到工作空间，</p>
+<figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /Users/naeshihiroshi/work/workspace/maven</span><br><span class="line">mvn archetype:<span class="keyword">generate</span> -DgroupId=com<span class="variable">.zhihao</span><span class="variable">.miao</span><span class="variable">.maven</span> -DartifactId=maven-qucikstart-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false</span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2017/12/26/maven快速入门/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/maven//" class="article-tag-list-link color1">maven</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/26/maven快速入门/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-maven的安装及一些说明" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/26/maven的安装及一些说明/">maven的安装及安装目录说明</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/26/maven的安装及一些说明/" class="archive-article-date">
+  	<time datetime="2017-12-26T03:43:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="maven的安装"><a href="#maven的安装" class="headerlink" title="maven的安装"></a>maven的安装</h3><ul>
+<li>先安装jdk(学习java的都会），配置<code>JAVA_HOME</code>环境变量，因为<code>maven</code>是<code>java</code>写出来的项目，</li>
+<li>下载安装maven<br><a href="https://maven.apache.org/download.cgi">maven的官方地址</a><br><a href="http://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.tar.gz">mac下载的地址</a></li>
+</ul>
+<p>解压下载的包到指定的目录，配置maven的环境变量</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi ~/.bash_profile</span><br><span class="line">export M2_HOME=/Users<span class="meta-keyword">/naeshihiroshi/</span>software<span class="meta-keyword">/work/</span>apache-maven<span class="number">-3.3</span><span class="number">.9</span></span><br></pre></td></tr></table></figure>
+        
+          <a class="article-more-a" href="/2017/12/26/maven的安装及一些说明/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/maven//" class="article-tag-list-link color1">maven</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/26/maven的安装及一些说明/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-spring secuity快速入门" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/26/spring secuity快速入门/">spring secuity快速入门</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/26/spring secuity快速入门/" class="archive-article-date">
+  	<time datetime="2017-12-26T03:16:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们使用springmvc web项目基于xml配置文件和注解配置类二种方式来写一个快速入门。</p>
+<h2 id="基于配置文件的spring-security的快速入门"><a href="#基于配置文件的spring-security的快速入门" class="headerlink" title="基于配置文件的spring security的快速入门"></a>基于配置文件的spring security的快速入门</h2><ul>
+<li>加入依赖</li>
+</ul>
+<p>加入<code>springmvc</code>,<code>spring secuity</code>，<code>servlet</code>的一些依赖,配置jetty的插件，配置端口是8001，<code>contextPath</code>是”/“</p>
+        
+          <a class="article-more-a" href="/2017/12/26/spring secuity快速入门/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/spring-secuity//" class="article-tag-list-link color5">spring secuity</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/26/spring secuity快速入门/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-maven前言" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/26/maven前言/">maven前言</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/26/maven前言/" class="archive-article-date">
+  	<time datetime="2017-12-26T03:16:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-26</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="没有maven的世界"><a href="#没有maven的世界" class="headerlink" title="没有maven的世界"></a>没有maven的世界</h3><ul>
+<li>每天都要编写自己负责的功能模块的代码，然后编写对应的单元测试，接着运行单元测试，生成单元测试覆盖率的报告</li>
+<li>注意，如果你的项目遇到了需要使用的第三方jar包，你需要自己去寻找对应版本的jar包，然后添加到你的工程里面去<br>我们的每一个工程，都是要依赖大量的其他第三方的项目的，比如最经典的，ssh框架的整合，spring mvc spring mybatis。<br>这个时候就要把对应框架的jar包给从网上下载下来，然后copy到我们自己的工程的lib目录下面去。<br>很麻烦，一个工程，依赖包太多了，可能多达数十个，搞一大堆。</li>
+</ul>
+<p>然后就要开始尝试调试搭建的项目，依赖能不能放在一起整合在一起，跑通，这个时候还会出现各种缺少依赖jar包。你依赖了spring，spring可能又依赖了个什么什么包，<br>此时直接运行还会报错，抛出class not found exception，可能又要去下载更多的包放进来，直到不再报错。<br>还有的时候，可能还会出现一些依赖冲突，比如你依赖了个什么mybatis，还依赖了spring，spring和mybatis都依赖了相同的一个项目，打个比方log4j，<br>但是版本还不一样。这个时候你还得自己手动选择一个较高的版本，解决一些依赖的冲突问题。</p>
+        
+          <a class="article-more-a" href="/2017/12/26/maven前言/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/maven//" class="article-tag-list-link color1">maven</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/26/maven前言/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-构建一个spring mvc web程序" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/23/构建一个spring mvc web程序/">构建一个spring mvc web程序</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/23/构建一个spring mvc web程序/" class="archive-article-date">
+  	<time datetime="2017-12-23T03:16:11.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在学习spring secuity之前我们先构建一个spring mvc的web程序，以后的spring secuity就在这个web程序基础上去构建。</p>
+<ul>
+<li>加入依赖<br>我们使用maven构建项目，我们加入了<code>springmvc</code>和<code>servlet</code>相关的依赖，并且加入了jetty插件，可以不使用外部容器的情况下去运行启动项目，依赖如下：</li>
+</ul>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="params">&lt;dependencies&gt;</span></span><br><span class="line">        <span class="params">&lt;dependency&gt;</span></span><br><span class="line">            <span class="params">&lt;groupId&gt;</span>org.springframework<span class="params">&lt;/groupId&gt;</span></span><br><span class="line">            <span class="params">&lt;artifactId&gt;</span>spring-webmvc<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">            <span class="params">&lt;version&gt;</span><span class="number">4.3</span><span class="number">.13</span>.RELEASE<span class="params">&lt;/version&gt;</span></span><br><span class="line">        <span class="params">&lt;/dependency&gt;</span></span><br><span class="line">        <span class="params">&lt;dependency&gt;</span></span><br><span class="line">            <span class="params">&lt;groupId&gt;</span>javax.servlet<span class="params">&lt;/groupId&gt;</span></span><br><span class="line">            <span class="params">&lt;artifactId&gt;</span>javax.servlet-api<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">            <span class="params">&lt;version&gt;</span><span class="number">3.1</span><span class="number">.0</span><span class="params">&lt;/version&gt;</span></span><br><span class="line">            <span class="params">&lt;scope&gt;</span>provided<span class="params">&lt;/scope&gt;</span></span><br><span class="line">        <span class="params">&lt;/dependency&gt;</span></span><br><span class="line">        <span class="params">&lt;dependency&gt;</span></span><br><span class="line">            <span class="params">&lt;groupId&gt;</span>javax.servlet.jsp<span class="params">&lt;/groupId&gt;</span></span><br><span class="line">            <span class="params">&lt;artifactId&gt;</span>jsp-api<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">            <span class="params">&lt;version&gt;</span><span class="number">2.2</span><span class="params">&lt;/version&gt;</span></span><br><span class="line">            <span class="params">&lt;scope&gt;</span>provided<span class="params">&lt;/scope&gt;</span></span><br><span class="line">        <span class="params">&lt;/dependency&gt;</span></span><br><span class="line">    <span class="params">&lt;/dependencies&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="params">&lt;build&gt;</span></span><br><span class="line">        <span class="params">&lt;finalName&gt;</span>springmvc-web<span class="params">&lt;/finalName&gt;</span></span><br><span class="line">        <span class="params">&lt;plugins&gt;</span></span><br><span class="line">            <span class="params">&lt;plugin&gt;</span></span><br><span class="line">                <span class="params">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="params">&lt;/groupId&gt;</span></span><br><span class="line">                <span class="params">&lt;artifactId&gt;</span>maven-war-plugin<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">                <span class="params">&lt;version&gt;</span><span class="number">3.0</span><span class="number">.0</span><span class="params">&lt;/version&gt;</span></span><br><span class="line">                <span class="params">&lt;configuration&gt;</span></span><br><span class="line">                    <span class="params">&lt;failOnMissingWebXml&gt;</span>false<span class="params">&lt;/failOnMissingWebXml&gt;</span></span><br><span class="line">                <span class="params">&lt;/configuration&gt;</span></span><br><span class="line">            <span class="params">&lt;/plugin&gt;</span></span><br><span class="line">            <span class="params">&lt;plugin&gt;</span></span><br><span class="line">                <span class="params">&lt;groupId&gt;</span>org.eclipse.jetty<span class="params">&lt;/groupId&gt;</span></span><br><span class="line">                <span class="params">&lt;artifactId&gt;</span>jetty-maven-plugin<span class="params">&lt;/artifactId&gt;</span></span><br><span class="line">                <span class="params">&lt;version&gt;</span><span class="number">9.4</span><span class="number">.3</span>.v20170317<span class="params">&lt;/version&gt;</span></span><br><span class="line">                <span class="params">&lt;configuration&gt;</span></span><br><span class="line">                    <span class="params">&lt;httpConnector&gt;</span></span><br><span class="line">                        <span class="params">&lt;port&gt;</span><span class="number">8001</span><span class="params">&lt;/port&gt;</span></span><br><span class="line">                    <span class="params">&lt;/httpConnector&gt;</span></span><br><span class="line">                    <span class="comment">//配置contextPath为/</span></span><br><span class="line">                    <span class="params">&lt;webApp&gt;</span></span><br><span class="line">                        <span class="params">&lt;contextPath&gt;</span>/<span class="params">&lt;/contextPath&gt;</span></span><br><span class="line">                    <span class="params">&lt;/webApp&gt;</span></span><br><span class="line">                <span class="params">&lt;/configuration&gt;</span></span><br><span class="line">            <span class="params">&lt;/plugin&gt;</span></span><br><span class="line">        <span class="params">&lt;/plugins&gt;</span></span><br><span class="line">    <span class="params">&lt;/build&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>首先定义系统启动根类</li>
+</ul>
+<p>配置的@EnableWebMvc注解的类需要继承<code>WebMvcConfigurerAdapter</code>，来做一下回调配置（比如说自己定义的类型转换器，自己定义的拦截器等），详细了解可以点击查看<code>@EnableWebMvc</code>的源码备注</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@EnableWebMvc</span></span><br><span class="line"><span class="variable">@ComponentScan</span>(<span class="string">"com.zhihao.miao.mvc"</span>)</span><br><span class="line">public class WebAppConfig extends WebMvcConfigurerAdapter &#123;</span><br><span class="line"></span><br><span class="line">    <span class="selector-tag">public</span> <span class="selector-tag">void</span> <span class="selector-tag">configureDefaultServletHandling</span>(DefaultServletHandlerConfigurer configurer) &#123;</span><br><span class="line">        <span class="comment">//配置默认的DefaultServletHttpRequestHandler（静态资源默认使用的servlet），DefaultServletHttpRequestHandler是HttpRequestHandler的默认实现，</span></span><br><span class="line">        configurer<span class="selector-class">.enable</span>();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>其他的一些配置</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 系统启动类，配置url过滤的url</span><br><span class="line"> */</span></span><br><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">WebAppInitializer</span> <span class="keyword">extends</span> <span class="title">AbstractAnnotationConfigDispatcherServletInitializer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">Class</span>&lt;?&gt;[] getRootConfigClasses() &#123;</span><br><span class="line">        <span class="comment">//以我的理解就是以WebAppConfig来创建spring 容器上下文</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Class</span>&lt;?&gt;[]&#123;<span class="type">WebAppConfig</span>.<span class="keyword">class</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">Class</span>&lt;?&gt;[] getServletConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">String</span>[] getServletMappings() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">String</span>[]&#123;<span class="string">"/*"</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>定义自己的Controller</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">@RestController</span></span><br><span class="line">public class HelloController &#123;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@GetMapping</span>(<span class="string">"/hello"</span>)</span><br><span class="line">    public String hello()&#123;</span><br><span class="line">        return "hello spring mvc web";</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@GetMapping</span>(<span class="string">"/home"</span>)</span><br><span class="line">    public String home()&#123;</span><br><span class="line">        return "home spring mvc web";</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">@GetMapping</span>(<span class="string">"/admin"</span>)</span><br><span class="line">    public String admin()&#123;</span><br><span class="line">        return "admin spring mvc web";</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>测试</li>
+</ul>
+<p>访问下面三个接口，都可以访问，</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//localhost:8001/hello</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//localhost:8001/home</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//localhost:8001/admin</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>url的组成</li>
+</ul>
+<p>这边说明一下url地址的一些组成，比如说<code>http://127.0.0.1:8081/home</code>，其可以看成<code>http[s]://[host]:[port][request url][?queryString]</code>，而<code>request url = [context path][servlet path][path info]</code>，url路径除了<code>context path</code>和<code>servlet path</code>之外就是<code>path_info</code>了，我们这边没有配置<code>context path</code>和<code>servlet path</code>。</p>
+<p>修改一下Controller，</p>
+<p>@RestController<br>public class HelloController {</p>
+<pre><code>@GetMapping(&quot;/hello&quot;)
+public String hello(HttpServletRequest req){
+    System.out.println(&quot;==================&quot;);
+    System.out.println(&quot; req.getRequestURI(): &quot; + req.getRequestURI());
+    System.out.println(&quot; req.getContextPath(): &quot; + req.getContextPath());
+    System.out.println(&quot; req.getServletPath(): &quot; + req.getServletPath());
+    System.out.println(&quot; req.getPathInfo(): &quot; + req.getPathInfo());
+    System.out.println(&quot;==================&quot;);
+    return &quot;hello spring mvc web&quot;;
+}
+
+@GetMapping(&quot;/home&quot;)
+public String home(){
+    return &quot;home spring mvc web&quot;;
+}
+
+@GetMapping(&quot;/admin&quot;)
+public String admin(){
+    return &quot;admin spring mvc web&quot;;
+}
+</code></pre><p>}</p>
+<p>控制台打印：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">==================</span><br><span class="line"> req.getRequestURI(): /hello</span><br><span class="line"> req.getContextPath(): </span><br><span class="line"> req.getServletPath(): </span><br><span class="line"> req.getPathInfo(): /hello</span><br><span class="line">==================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们修改pom文件的jetty插件的<code>context path</code></li>
+</ul>
+<p>如下，</p>
+<figure class="highlight bnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">&lt;build&gt;</span></span><br><span class="line">        <span class="attribute">&lt;finalName&gt;</span>springmvc-web<span class="attribute">&lt;/finalName&gt;</span></span><br><span class="line">        <span class="attribute">&lt;plugins&gt;</span></span><br><span class="line">            <span class="attribute">&lt;plugin&gt;</span></span><br><span class="line">                <span class="attribute">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="attribute">&lt;/groupId&gt;</span></span><br><span class="line">                <span class="attribute">&lt;artifactId&gt;</span>maven-war-plugin<span class="attribute">&lt;/artifactId&gt;</span></span><br><span class="line">                <span class="attribute">&lt;version&gt;</span>3.0.0<span class="attribute">&lt;/version&gt;</span></span><br><span class="line">                <span class="attribute">&lt;configuration&gt;</span></span><br><span class="line">                    <span class="attribute">&lt;failOnMissingWebXml&gt;</span>false<span class="attribute">&lt;/failOnMissingWebXml&gt;</span></span><br><span class="line">                <span class="attribute">&lt;/configuration&gt;</span></span><br><span class="line">            <span class="attribute">&lt;/plugin&gt;</span></span><br><span class="line">            <span class="attribute">&lt;plugin&gt;</span></span><br><span class="line">                <span class="attribute">&lt;groupId&gt;</span>org.eclipse.jetty<span class="attribute">&lt;/groupId&gt;</span></span><br><span class="line">                <span class="attribute">&lt;artifactId&gt;</span>jetty-maven-plugin<span class="attribute">&lt;/artifactId&gt;</span></span><br><span class="line">                <span class="attribute">&lt;version&gt;</span>9.4.3.v20170317<span class="attribute">&lt;/version&gt;</span></span><br><span class="line">                <span class="attribute">&lt;configuration&gt;</span></span><br><span class="line">                    <span class="attribute">&lt;httpConnector&gt;</span></span><br><span class="line">                        <span class="attribute">&lt;port&gt;</span>8001<span class="attribute">&lt;/port&gt;</span></span><br><span class="line">                    <span class="attribute">&lt;/httpConnector&gt;</span></span><br><span class="line">                    <span class="attribute">&lt;webApp&gt;</span></span><br><span class="line">                        <span class="attribute">&lt;!--修改contextPath&gt;</span></span><br><span class="line">                        <span class="attribute">&lt;contextPath&gt;</span>/web<span class="attribute">&lt;/contextPath&gt;</span></span><br><span class="line">                    <span class="attribute">&lt;/webApp&gt;</span></span><br><span class="line">                <span class="attribute">&lt;/configuration&gt;</span></span><br><span class="line">            <span class="attribute">&lt;/plugin&gt;</span></span><br><span class="line">        <span class="attribute">&lt;/plugins&gt;</span></span><br><span class="line"><span class="attribute">&lt;/build&gt;</span></span><br></pre></td></tr></table></figure>
+<p>此时访问的url地址就改成了：</p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//localhost:8001/web/hello</span></span><br></pre></td></tr></table></figure>
+<p>控制台打印：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">==================</span><br><span class="line"> req.getRequestURI(): /web/hello</span><br><span class="line"> req.getContextPath(): /web</span><br><span class="line"> req.getServletPath(): </span><br><span class="line"> req.getPathInfo(): /hello</span><br><span class="line">==================</span><br></pre></td></tr></table></figure>
+<ul>
+<li>我们再去修改<code>servlet path</code>，修改配置类中</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">WebAppInitializer</span> <span class="keyword">extends</span> <span class="title">AbstractAnnotationConfigDispatcherServletInitializer</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">Class</span>&lt;?&gt;[] getRootConfigClasses() &#123;</span><br><span class="line">        <span class="comment">//以我的理解就是以WebAppConfig来创建spring 容器上下文</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="type">Class</span>&lt;?&gt;[]&#123;<span class="type">WebAppConfig</span>.<span class="keyword">class</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="type">Class</span>&lt;?&gt;[] getServletConfigClasses() &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * url mapping 通常有三种配置方式</span><br><span class="line">     *</span><br><span class="line">     * 1: <span class="comment">/*</span><br><span class="line">     * 2: /aaa<span class="comment">/*, /aaa/bbb<span class="comment">/*</span><br><span class="line">     * 3: *.do, *.action</span><br><span class="line">     *</span><br><span class="line">     * 第一种配置方式 servlet Path 为空</span><br><span class="line">     * 第二种配置方式 servlet Path /aaa, /aaa/bbb/</span><br><span class="line">     * 第三种配置方式servlet Path /aaa/bbb.do, /aaa/bbb.action</span><br><span class="line">     *</span><br><span class="line">     */</span></span><br><span class="line">    @Override</span><br><span class="line">    protected String[] getServletMappings() &#123;</span><br><span class="line">        return new String[]&#123;"/v1<span class="comment">/*","/v2<span class="comment">/*"&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span></span></span></span></span></span><br></pre></td></tr></table></figure>
+<p>此时访问路径：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span>/<span class="regexp">/localhost:8001/web</span><span class="regexp">/v1/hello</span></span><br></pre></td></tr></table></figure>
+<p>控制台打印：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">==================</span><br><span class="line"> req.getRequestURI(): /web/v1/hello</span><br><span class="line"> req.getContextPath(): /web</span><br><span class="line"> req.getServletPath(): /v1</span><br><span class="line"> req.getPathInfo(): /hello</span><br><span class="line">==================</span><br></pre></td></tr></table></figure>
+<p>或者：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span>/<span class="regexp">/localhost:8001/web</span><span class="regexp">/v2/hello</span></span><br></pre></td></tr></table></figure>
+<p>控制台打印：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">==================</span><br><span class="line"> req.getRequestURI(): /web/v2/hello</span><br><span class="line"> req.getContextPath(): /web</span><br><span class="line"> req.getServletPath(): /v2</span><br><span class="line"> req.getPathInfo(): /hello</span><br><span class="line">==================</span><br></pre></td></tr></table></figure>
+<p>讲到这边一个基于spring web构建的web程序已经搭建成功，并且可以进行访问了，我们发现我们应用暴露的url地址不管是谁都可以访问，这样是不安全的，我们希望其得到一些权限认证，不同的人员认证之后才可以访问具体的资源。而spring secuity就是为了解决这个问题的，当然spring secuity框架能为我们做的事情不仅如此。</p>
+<h2 id="Spring-Security"><a href="#Spring-Security" class="headerlink" title="Spring Security"></a>Spring Security</h2><blockquote>
+<p>Spring Security is a powerful and highly customizable authentication and access-control framework. It is the de-facto standard for securing Spring-based applications.<br>Spring Security是一个强大的且高度可定制化的身份认证和访问控制框架。是一个基于Spring之上的一个提供安全解决方案的框架</p>
 </blockquote>
-        
-          <a class="article-more-a" href="/2017/12/19/Spring AMQP简介与quick start/#more">more >></a>
-        
+<ul>
+<li>特征</li>
+</ul>
+<ol>
+<li>多种认证方式HTTP BASIC，HTTP Digest（HTTP摘要认证），X.509，LDAP。Form-based（HTTP表单认证），OpenID，CAS</li>
+<li>多种权限验证，支持基于URL的权限验证，方法的权限验证等</li>
+<li>多种安全领域的解决方案，XSS，XSRF，CORS，session管理，单点登录（CAS），OAuth等等。</li>
+<li>强大的可扩展性，可配置性</li>
+<li>基于官方Java Config（注解）和xml的配置方式</li>
+<li>官方集成springboot，大大简化了spring security的开发难度。</li>
+</ol>
+<h3 id="参考代码"><a href="#参考代码" class="headerlink" title="参考代码"></a>参考代码</h3><p><a href="">springmvc-web</a><br><a href="">springmvc-web02</a></p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="https://docs.spring.io/spring-security/site/docs/4.2.3.RELEASE/reference/htmlsingle/" target="_blank" rel="external">官方文档</a><br><a href="http://www.spring4all.com/article/428" target="_blank" rel="external">Spring Security 从入门到进阶系列教程</a></p>
+
       
 
       
@@ -509,7 +840,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
+        			<a href="/categories/spring-secuity//" class="article-tag-list-link color5">spring secuity</a>
         		</li>
       		
 		</ul>
@@ -518,239 +849,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/Spring AMQP简介与quick start/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-RabbitMQ java client的使用" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/RabbitMQ java client的使用/">RabbitMQ java client的使用</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/19/RabbitMQ java client的使用/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:12:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="java-client的使用"><a href="#java-client的使用" class="headerlink" title="java client的使用"></a>java client的使用</h2><blockquote>
-<p>本篇博客介绍RabbitMQ java client的一些简单的api使用，如声明Exchange，Queue，发送消息，消费消息，一些高级api会在下面的章节详细的说明。</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2017/12/19/RabbitMQ java client的使用/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/RabbitMQ java client的使用/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Binding Queue Message概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/Binding Queue Message概念/">Binding,Queue,Message概念</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/19/Binding Queue Message概念/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:04:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Binding详解"><a href="#Binding详解" class="headerlink" title="Binding详解"></a>Binding详解</h2><p><img src="http://upload-images.jianshu.io/upload_images/5225109-92eb44040573c13a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="黄线部分就是binding"></p>
-<p><code>Exchange</code>与<code>Exchange</code>，<code>Queue</code>之间的虚拟连接，<code>Binding</code>中可以包含<code>Routing key</code>或者参数</p>
-        
-          <a class="article-more-a" href="/2017/12/19/Binding Queue Message概念/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/Binding Queue Message概念/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-四种类型Exchange" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/19/四种类型Exchange/">四种类型Exchange</a>
-    </h1>
-  
-
-        
-        <a href="/2017/12/19/四种类型Exchange/" class="archive-article-date">
-  	<time datetime="2017-12-19T12:03:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Exchange概念"><a href="#Exchange概念" class="headerlink" title="Exchange概念"></a>Exchange概念</h2><p>Exchange：交互机，根据路由键转发消息到绑定的队列。</p>
-<p><img src="http://upload-images.jianshu.io/upload_images/5225109-84e0b04b2dac1efd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="RabbitMQ架构图"></p>
-        
-          <a class="article-more-a" href="/2017/12/19/四种类型Exchange/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/RabbitMQ//" class="article-tag-list-link color4">RabbitMQ</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/12/19/四种类型Exchange/">展开全文 >></a>
+          <a class="article-more-a" href="/2017/12/23/构建一个spring mvc web程序/">展开全文 >></a>
         </p>
       
 
@@ -782,7 +881,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
     </nav>
   
 
@@ -794,7 +893,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 zhihao.miao
+    		&copy; 2018 zhihao.miao
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -881,10 +980,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">原创</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
             
@@ -945,11 +1040,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             </li>
           
             <li class="search-li">
+              <a href="/categories/maven/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>maven</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="/categories/git/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>git</a>
+            </li>
+          
+            <li class="search-li">
               <a href="https://www.jianshu.com/u/90ab66c248e6" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>占小狼</a>
             </li>
           
             <li class="search-li">
               <a href="http://elasticjob.io/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>elasticjob</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.iocoder.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>芋道源码</a>
             </li>
           
         </ul>

@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="//litten.me">
   <title>消息确认之二（Consumer Acknowledgements） | zhihao.miao</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="消费确认（comsumer acknowledgements）broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
+  <meta name="description" content="broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="消息确认之二（Consumer Acknowledgements）">
 <meta property="og:url" content="//litten.me/2017/12/19/消息确认之二（Consumer Acknowledgements）/index.html">
 <meta property="og:site_name" content="zhihao.miao">
-<meta property="og:description" content="消费确认（comsumer acknowledgements）broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
+<meta property="og:description" content="broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-d56211e12bfb0579.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-dad870d1d8943943.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-b18d80ab516b2012.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-5223999b62731e01.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-cc96801dc1c72368.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2017-12-22T02:16:51.000Z">
+<meta property="og:updated_time" content="2018-01-11T03:00:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息确认之二（Consumer Acknowledgements）">
-<meta name="twitter:description" content="消费确认（comsumer acknowledgements）broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
+<meta name="twitter:description" content="broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/5225109-d56211e12bfb0579.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
   
     <link rel="alternative" href="/atom.xml" title="zhihao.miao" type="application/atom+xml">
@@ -52,7 +52,7 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="null" class="js-avatar">
+			<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1514286165584&amp;di=c9eb1936f5718fa0388e3b993b0ca3ac&amp;imgtype=0&amp;src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3Ded9bba9964224f4a5799731b39f69044%2F70e7bc83b9014a90a9638a02a0773912b21bee26.jpg" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">zhihao.miao</a></h1>
@@ -112,7 +112,7 @@
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="null" class="js-avatar">
+				<img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1514286165584&amp;di=c9eb1936f5718fa0388e3b993b0ca3ac&amp;imgtype=0&amp;src=http%3A%2F%2Fimgsrc.baidu.com%2Fforum%2Fw%3D580%2Fsign%3Ded9bba9964224f4a5799731b39f69044%2F70e7bc83b9014a90a9638a02a0773912b21bee26.jpg" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">zhihao.miao</h1>
@@ -183,7 +183,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="消费确认（comsumer-acknowledgements）"><a href="#消费确认（comsumer-acknowledgements）" class="headerlink" title="消费确认（comsumer acknowledgements）"></a>消费确认（comsumer acknowledgements）</h2><p>broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。</p>
+        <p>broker与消费者之间的消息确认称为comsumer acknowledgements，comsumer acknowledgements机制用于解决消费者与Rabbitmq服务器之间消息可靠传输，它是在消费端消费成功之后通知broker消费端消费消息成功从而broker删除这个消息。</p>
 <a id="more"></a>
 <h3 id="RabbitMQ-Java-Client-实现消息确认"><a href="#RabbitMQ-Java-Client-实现消息确认" class="headerlink" title="RabbitMQ Java Client 实现消息确认"></a>RabbitMQ Java Client 实现消息确认</h3><h4 id="自动确认"><a href="#自动确认" class="headerlink" title="自动确认"></a>自动确认</h4><p>向<code>zhihao.miao.order</code>队列中发送一条消息<br><img src="http://upload-images.jianshu.io/upload_images/5225109-d56211e12bfb0579.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700" alt="web管控台查看"></p>
 <figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.Channel;</span></span><br><span class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.Connection;</span></span><br><span class="line"><span class="meta"><span class="meta-keyword">import</span> com.rabbitmq.client.ConnectionFactory;</span></span><br><span class="line"></span><br><span class="line"><span class="meta"><span class="meta-keyword">import</span> java.util.concurrent.TimeUnit;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Consumer</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) throws Exception&#123;</span><br><span class="line">        ConnectionFactory connectionFactory = <span class="keyword">new</span> ConnectionFactory();</span><br><span class="line">        connectionFactory.setUri(<span class="string">"amqp://zhihao.miao:123456@192.168.1.131:5672"</span>);</span><br><span class="line"></span><br><span class="line">        Connection connection = connectionFactory.newConnection();</span><br><span class="line"></span><br><span class="line">        Channel channel = connection.createChannel();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span><br><span class="line">         * basicConsume方法的第二个参数是boolean类型，true表示消息一旦投递出去就自动确认，而false表示需要自己手动去确认</span><br><span class="line">         * 自动确认有丢消息的可能，因为如果消费端消费逻辑抛出异常，也就是消费端没有处理成功这条消息，那么就相当于丢失了消息</span><br><span class="line">         * 设置了false，表示需要人为手动的去确定消息，只有消费者将消息消费成功之后给与broker人为确定才进行消息确认</span><br><span class="line">         * 这边也有个问题就是如果由于程序员自己的代码的原因造成人为的抛出异常，人工确认那么消息就会一直重新入队列，一直重发？</span><br><span class="line">         */</span></span><br><span class="line"></span><br><span class="line">        String consumerTag = channel.basicConsume(<span class="string">"zhihao.miao.order"</span>,<span class="literal">true</span>,<span class="keyword">new</span> SimpleConsumer(channel));</span><br><span class="line">        System.out.println(consumerTag);</span><br><span class="line"></span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">30</span>);</span><br><span class="line"></span><br><span class="line">        channel.close();</span><br><span class="line">        connection.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -404,7 +404,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 zhihao.miao
+    		&copy; 2018 zhihao.miao
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -491,10 +491,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">原创</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">生活</a>
               </li>
             
@@ -555,11 +551,23 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
             </li>
           
             <li class="search-li">
+              <a href="/categories/maven/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>maven</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="/categories/git/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>git</a>
+            </li>
+          
+            <li class="search-li">
               <a href="https://www.jianshu.com/u/90ab66c248e6" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>占小狼</a>
             </li>
           
             <li class="search-li">
               <a href="http://elasticjob.io/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>elasticjob</a>
+            </li>
+          
+            <li class="search-li">
+              <a href="http://www.iocoder.cn/" target="_blank" class="search-title"><i class="icon-quo-left icon"></i>芋道源码</a>
             </li>
           
         </ul>
