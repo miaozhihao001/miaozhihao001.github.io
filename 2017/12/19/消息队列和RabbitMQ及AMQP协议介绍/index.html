@@ -19,7 +19,7 @@
 异步处理
 系统解耦解耦是消息中间队列解决的最本质问题。所谓解耦，简单一点就是一个事务，只关心核心的流程。而需要依赖其他系统但不那么重要的事情，有通知即可，无需等待结果。换句话说，关心的是“通知，而非“处理”。比如下单过程中，需要发送短信积分，如果下游系统过慢（比如短信网关速度不好），主流程一直在等待。用户肯定不希望支付下单的过程中几分钟之后才得到结果。那么我们只需要通知短信系">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/5225109-46b106ffc590da68.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/700">
-<meta property="og:updated_time" content="2017-12-22T02:16:42.000Z">
+<meta property="og:updated_time" content="2018-04-08T01:37:57.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="消息队列和RabbitMQ及AMQP协议介绍">
 <meta name="twitter:description" content="为什么要使用消息队列
@@ -232,7 +232,7 @@
 <p><strong>总结</strong>：<br>生产者将消息发送到Exchange交换机的，不是发送到Queue上的，生产者不知道消息是谁消费，有哪些消费者消费。Exchange根据一定的路由规则将消息转发到Queue。<br>消费者是监听队列的，不知道是哪个生产者发送的。</p>
 <p><strong>AMQP我的理解</strong><br>一个开放的面向消息中间件的协议，所有此协议的实现可以进行互相操作，无论实现语言如何，任何符合此协议的数据格式的消息工具都可以与任何其他兼容工具进行互操作。而以前JMS（Java Message Service），将不同的中间件的实现进行API层次的标准化。</p>
 <p>###AMQP实现<br><a href="http://www.rabbitmq.com/" target="_blank" rel="external">RabbitMQ</a><br><a href="http://qpid.apache.org/" target="_blank" rel="external">Apache Qpid</a><br><a href="http://www.openamq.org" target="_blank" rel="external">OpenAMQ</a></p>
-<p><strong>参考资料</strong><br><a href="https://tech.meituan.com/mq-design.html" target="_blank" rel="external">消息中间件设计精要</a><br><a href="http://blog.csdn.net/column/details/rabbitmq.html" target="_blank" rel="external">RabbitMQ博客</a><br><a href="https://github.com/rabbitmq" target="_blank" rel="external">githut地址</a></p>
+<p><strong>参考资料</strong><br><a href="https://www.jianshu.com/p/453c6e7ff81c" target="_blank" rel="external">分布式开放消息系统(RocketMQ)的原理与实践</a><br><a href="https://mp.weixin.qq.com/s?__biz=MzIwMzY1OTU1NQ==&amp;mid=2247484111&amp;idx=1&amp;sn=52692f969ebfb52952883175168c7216&amp;chksm=96cd4283a1bacb957370e6c4a6ba672c10014776de8ed0b09912324b91311f8f9457a98cf4fd&amp;mpshare=1&amp;scene=1&amp;srcid=0408p5hlDdbBO2XYJ3Sq2SIG&amp;key=3c93f38b04deb38470ab000dd31af3f6ac832fcdd509965b165ba4f5f4a18b429188138be9197cd33069570ca00bab2633748b104d2db116b6dda2e4dc57d07f3aef90bc9019bac8708907a1eeff737a&amp;ascene=0&amp;uin=MTYyNjQ1Njk1&amp;devicetype=iMac+MacBookPro13%2C2+OSX+OSX+10.12.4+build(16E195" target="_blank" rel="external">消息中间件选型分析</a><br><a href="https://tech.meituan.com/mq-design.html" target="_blank" rel="external">消息中间件设计精要</a><br><a href="http://blog.csdn.net/column/details/rabbitmq.html" target="_blank" rel="external">RabbitMQ博客</a><br><a href="https://github.com/rabbitmq" target="_blank" rel="external">githut地址</a></p>
 <p><strong>AMQP参考资料</strong><br><a href="http://www.amqp.org/" target="_blank" rel="external">amqp官网</a><br><a href="http://www.amqp.org/resources/download" target="_blank" rel="external">amqp官网协议下载</a><br><a href="https://en.wikipedia.org/wiki/Advanced_Message_Queuing_Protocol" target="_blank" rel="external">amqp协议文档</a></p>
 
       
